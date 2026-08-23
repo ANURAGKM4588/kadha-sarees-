@@ -258,7 +258,21 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
       try {
         const { data: dbProducts, error: dbErr } = await supabase.from("products").select("*");
         if (!dbErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
-          setProducts(sanitizeProducts(dbProducts));
+          const sanitized = sanitizeProducts(dbProducts);
+          setProducts(sanitized);
+
+          // Auto-heal any legacy or un-prefixed image rows in Supabase database
+          dbProducts.forEach((row) => {
+            if (row.image && (row.image.startsWith("/") || row.image.includes("%2520") || row.image.includes("Favicon.png"))) {
+              const match = sanitized.find((s) => s.slug === row.slug);
+              if (match) {
+                supabase.from("products").update({
+                  image: match.image,
+                  views: match.views,
+                }).eq("slug", row.slug).then();
+              }
+            }
+          });
         } else if (!dbErr && Array.isArray(dbProducts) && dbProducts.length === 0) {
           const localProds = loadInitialProducts();
           if (localProds.length > 0) {

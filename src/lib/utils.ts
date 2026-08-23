@@ -10,11 +10,10 @@ export function resolveAssetUrl(path: string): string {
   if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) {
     return path;
   }
-  let clean = path;
+  let clean = path.replace(/^(\.\/|\/)+/, "");
   try {
-    clean = decodeURIComponent(clean);
+    clean = encodeURI(decodeURI(clean));
   } catch {}
-  clean = clean.replace(/^(\.\/|\/)+/, "");
 
   const baseUrl = import.meta.env.BASE_URL || "/";
   const prefix = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
