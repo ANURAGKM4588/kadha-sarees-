@@ -32,8 +32,8 @@ export function HeroSectionOption6() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-slate-950">
-      {/* FULL BLEED EDGE-TO-EDGE FILLED HERO CONTAINER WITH INTERACTIVE SPOTLIGHT LENS */}
+    <section className="relative w-full overflow-hidden bg-cream">
+      {/* FULL BLEED EDGE-TO-EDGE FILLED HERO CONTAINER */}
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
@@ -41,9 +41,9 @@ export function HeroSectionOption6() {
         onMouseLeave={handleMouseLeave}
         className="relative w-full min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] group cursor-default select-none"
       >
-        {/* BASE LAYER: CUSTOM BLACK & WHITE HERO IMAGE */}
+        {/* BASE LAYER: FULL COLOR HERO IMAGE */}
         <img
-          src={getPublicUrl("herosection/Herosection-bw.png")}
+          src={getPublicUrl("herosection/Herosection.png")}
           alt="Kadha Handwoven Sarees Collection"
           width={1920}
           height={1080}
@@ -51,27 +51,9 @@ export function HeroSectionOption6() {
           className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-[10000ms] ease-out group-hover:scale-105"
         />
 
-        {/* REVEAL LAYER: FULL-COLOR IMAGE WITH DYNAMIC FEATHERED MOUSE CURSOR LENS (450px WIDE) */}
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-500 ease-out"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            WebkitMaskImage: `radial-gradient(circle 450px at ${mousePos.x}px ${mousePos.y}px, black 0%, black 40%, transparent 100%)`,
-            maskImage: `radial-gradient(circle 450px at ${mousePos.x}px ${mousePos.y}px, black 0%, black 40%, transparent 100%)`,
-          }}
-        >
-          <img
-            src={getPublicUrl("herosection/Herosection.png")}
-            alt="Kadha Handwoven Sarees Collection (Color Reveal)"
-            width={1920}
-            height={1080}
-            className="h-full w-full object-cover object-center transition-transform duration-[10000ms] ease-out group-hover:scale-105"
-          />
-        </div>
-
-        {/* ELEGANT MINIMAL GRADIENT OVERLAY FOR PERFECT READABILITY */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-slate-950/20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/30 pointer-events-none" />
+        {/* ELEGANT WARM GRADIENT OVERLAY FOR TEXT CONTRAST */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-ink/20 pointer-events-none" />
 
         {/* ALL-WHITE ELEGANT & MINIMAL TEXT OVERLAY ON IMAGE */}
         <div className="relative z-10 mx-auto max-w-[1400px] flex h-full min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] flex-col justify-between p-6 sm:p-12 lg:p-16 pointer-events-none">

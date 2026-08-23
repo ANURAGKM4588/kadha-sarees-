@@ -28,8 +28,8 @@ function Index() {
       <HeroSectionOption6 />
 
       {/* Marquee */}
-      <section className="mt-14 overflow-hidden bg-ink py-4">
-        <div className="marquee-track flex w-max gap-10 whitespace-nowrap text-sm text-primary-foreground/85">
+      <section className="mt-14 overflow-hidden bg-brand-soft py-4 border-y border-gold/30 shadow-xs">
+        <div className="marquee-track flex w-max gap-10 whitespace-nowrap text-sm text-primary-foreground/90 font-medium">
           {Array.from({ length: 2 }).map((_, i) => (
             <span key={i} className="flex gap-10">
               {[
@@ -157,7 +157,7 @@ function Index() {
 
       {/* Booking CTA */}
       <section className="mx-auto mt-20 max-w-[1400px] px-5 lg:px-8">
-        <div className="grid items-center gap-8 overflow-hidden rounded-[2.5rem] bg-ink px-8 py-14 text-primary-foreground sm:px-12 lg:grid-cols-[1.2fr_auto]">
+        <div className="grid items-center gap-8 overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-brand-soft via-brand to-brand-soft px-8 py-14 text-primary-foreground shadow-2xl border border-gold/30 sm:px-12 lg:grid-cols-[1.2fr_auto]">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-gold">
               Two-minute booking
