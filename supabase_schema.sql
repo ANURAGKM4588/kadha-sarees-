@@ -65,3 +65,16 @@ CREATE TABLE IF NOT EXISTS public.notify_requests (
 ALTER TABLE public.products DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.orders DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notify_requests DISABLE ROW LEVEL SECURITY;
+
+-- 4. Supabase Storage Bucket for Product Images
+-- Run this in SQL Editor to create public 'sarees' storage bucket:
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('sarees', 'sarees', true) 
+ON CONFLICT (id) DO NOTHING;
+
+-- Public Storage Access Policies for 'sarees' Bucket
+CREATE POLICY "Public Read Access on Sarees Bucket" ON storage.objects
+  FOR SELECT USING (bucket_id = 'sarees');
+
+CREATE POLICY "Public Insert Access on Sarees Bucket" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'sarees');

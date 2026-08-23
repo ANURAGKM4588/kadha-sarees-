@@ -10,6 +10,7 @@ import {
 } from "@/lib/shop-store";
 import { formatPrice, weaves, type BlouseAvailability } from "@/data/sarees";
 import { getPublicUrl } from "@/lib/utils";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 import {
   DollarSign,
@@ -1640,6 +1641,94 @@ export function AdminPanel() {
   );
 }
 
+// FAST CANVAS COMPRESSOR TO BLOB FOR SUPABASE STORAGE UPLOAD
+function compressFileToBlob(file: File, maxWidth = 1000, quality = 0.8): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Canvas context failed"));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error("Blob conversion failed"));
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+      img.onerror = () => reject(new Error("Failed to load image for blob creation"));
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
+}
+
+// UPLOADS IMAGE FILE TO SUPABASE STORAGE 'sarees' BUCKET AND RETURNS PUBLIC CDN URL
+export async function uploadToSupabaseStorage(file: File): Promise<string> {
+  if (!isSupabaseConfigured) {
+    return compressImageFile(file, 800, 0.75);
+  }
+
+  try {
+    const compressedBlob = await compressFileToBlob(file, 1000, 0.8);
+    const fileName = `saree_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.jpg`;
+    const filePath = `products/${fileName}`;
+
+    // Upload to 'sarees' bucket
+    const { data, error } = await supabase.storage.from("sarees").upload(filePath, compressedBlob, {
+      contentType: "image/jpeg",
+      upsert: true,
+    });
+
+    if (!error && data) {
+      const { data: publicUrlData } = supabase.storage.from("sarees").getPublicUrl(data.path);
+      if (publicUrlData?.publicUrl) {
+        return publicUrlData.publicUrl;
+      }
+    }
+
+    // Try 'products' bucket fallback if 'sarees' bucket is missing
+    const { data: dataProd, error: errorProd } = await supabase.storage.from("products").upload(filePath, compressedBlob, {
+      contentType: "image/jpeg",
+      upsert: true,
+    });
+
+    if (!errorProd && dataProd) {
+      const { data: publicUrlData } = supabase.storage.from("products").getPublicUrl(dataProd.path);
+      if (publicUrlData?.publicUrl) {
+        return publicUrlData.publicUrl;
+      }
+    }
+
+    console.info("Supabase Storage bucket notice, using optimized Data URL fallback.");
+    return compressImageFile(file, 800, 0.75);
+  } catch (err) {
+    console.warn("Supabase Storage exception, using Data URL fallback:", err);
+    return compressImageFile(file, 800, 0.75);
+  }
+}
+
 // FAST OFFSCREEN CANVAS IMAGE COMPRESSOR (Produces compact JPEG base64 strings ~40KB for ultra-fast localStorage saving)
 function compressImageFile(file: File, maxWidth = 600, quality = 0.65): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -1747,28 +1836,28 @@ function AddProductModal({
 
   if (!isOpen) return null;
 
-  // Upload Cover Page Image Handler
+  // Upload Cover Page Image Handler (Uploads directly to Supabase Storage)
   const handleCoverFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
       setIsCompressing(true);
-      const compressedUrl = await compressImageFile(file, 800, 0.75);
-      setImage(compressedUrl);
+      const uploadedUrl = await uploadToSupabaseStorage(file);
+      setImage(uploadedUrl);
       setViews((prev) => {
-        if (prev.some((v) => v.url === compressedUrl)) return prev;
-        return [{ url: compressedUrl, label: "Cover Page Image" }, ...prev];
+        if (prev.some((v) => v.url === uploadedUrl)) return prev;
+        return [{ url: uploadedUrl, label: "Cover Page Image" }, ...prev];
       });
     } catch (err) {
-      console.error("Compression failed:", err);
+      console.error("Upload failed:", err);
     } finally {
       setIsCompressing(false);
       e.target.value = "";
     }
   };
 
-  // Upload Additional Images Handler (Supports Multiple File Selection)
+  // Upload Additional Images Handler (Supports Multiple File Selection to Supabase Storage)
   const handleAdditionalFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -1776,21 +1865,21 @@ function AddProductModal({
     try {
       setIsCompressing(true);
       const fileList = Array.from(files);
-      const compressedUrls = await Promise.all(
-        fileList.map((file) => compressImageFile(file, 800, 0.75))
+      const uploadedUrls = await Promise.all(
+        fileList.map((file) => uploadToSupabaseStorage(file))
       );
 
-      const newEntries = compressedUrls.map((url, i) => ({
+      const newEntries = uploadedUrls.map((url, i) => ({
         url,
         label: `Featured Image ${views.length + i + 1}`,
       }));
 
       setViews((prev) => [...prev, ...newEntries]);
-      if (!image && compressedUrls.length > 0) {
-        setImage(compressedUrls[0]);
+      if (!image && uploadedUrls.length > 0) {
+        setImage(uploadedUrls[0]);
       }
     } catch (err) {
-      console.error("Compression failed:", err);
+      console.error("Upload failed:", err);
     } finally {
       setIsCompressing(false);
       e.target.value = "";
@@ -2267,28 +2356,28 @@ function EditProductModal({
 
   if (!product) return null;
 
-  // Upload Cover Page Image Handler
+  // Upload Cover Page Image Handler (Uploads directly to Supabase Storage)
   const handleCoverFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
       setIsCompressing(true);
-      const compressedUrl = await compressImageFile(file, 800, 0.75);
-      setImage(compressedUrl);
+      const uploadedUrl = await uploadToSupabaseStorage(file);
+      setImage(uploadedUrl);
       setViews((prev) => {
-        if (prev.some((v) => v.url === compressedUrl)) return prev;
-        return [{ url: compressedUrl, label: "Cover Page Image" }, ...prev];
+        if (prev.some((v) => v.url === uploadedUrl)) return prev;
+        return [{ url: uploadedUrl, label: "Cover Page Image" }, ...prev];
       });
     } catch (err) {
-      console.error("Compression failed:", err);
+      console.error("Upload failed:", err);
     } finally {
       setIsCompressing(false);
       e.target.value = "";
     }
   };
 
-  // Upload Additional Images Handler (Supports Multiple File Selection)
+  // Upload Additional Images Handler (Supports Multiple File Selection to Supabase Storage)
   const handleAdditionalFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -2296,21 +2385,21 @@ function EditProductModal({
     try {
       setIsCompressing(true);
       const fileList = Array.from(files);
-      const compressedUrls = await Promise.all(
-        fileList.map((file) => compressImageFile(file, 800, 0.75))
+      const uploadedUrls = await Promise.all(
+        fileList.map((file) => uploadToSupabaseStorage(file))
       );
 
-      const newEntries = compressedUrls.map((url, i) => ({
+      const newEntries = uploadedUrls.map((url, i) => ({
         url,
         label: `Featured Image ${views.length + i + 1}`,
       }));
 
       setViews((prev) => [...prev, ...newEntries]);
-      if (!image && compressedUrls.length > 0) {
-        setImage(compressedUrls[0]);
+      if (!image && uploadedUrls.length > 0) {
+        setImage(uploadedUrls[0]);
       }
     } catch (err) {
-      console.error("Compression failed:", err);
+      console.error("Upload failed:", err);
     } finally {
       setIsCompressing(false);
       e.target.value = "";
