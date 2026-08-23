@@ -55,9 +55,11 @@ export function triggerFlyToCartAnimation(sourceImgElement: HTMLElement | null) 
     }
 
     // Instant pop/pulse animation on the bag button
-    targetBagElement.classList.add("scale-125", "ring-4", "ring-gold/60", "bg-gold", "text-brand-soft");
-    setTimeout(() => {
-      targetBagElement.classList.remove("scale-125", "ring-4", "ring-gold/60", "bg-gold", "text-brand-soft");
-    }, 300);
+    if (targetBagElement) {
+      targetBagElement.classList.add("scale-125", "ring-4", "ring-gold/60", "bg-gold", "text-brand-soft");
+      setTimeout(() => {
+        targetBagElement.classList.remove("scale-125", "ring-4", "ring-gold/60", "bg-gold", "text-brand-soft");
+      }, 300);
+    }
   }, DURATION - 20); // 480ms: perfectly synced with exact entry time
 }

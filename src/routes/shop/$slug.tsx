@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-ro
 import { useState, useEffect, useRef } from "react";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { SareeCard } from "@/components/saree-card";
-import { formatPrice, getSaree, sarees, type SareeView } from "@/data/sarees";
+import { formatPrice, getSaree, sarees, type Saree, type SareeView } from "@/data/sarees";
 import { useCart } from "@/lib/cart";
 import { useShopStore } from "@/lib/shop-store";
 import { triggerFlyToCartAnimation } from "@/lib/fly-to-cart";
@@ -60,7 +60,7 @@ export const Route = createFileRoute("/shop/$slug")({
               "@type": "Product",
               name: loaderData.name,
               description: loaderData.blurb,
-              image: loaderData.views.map((v) => v.url),
+              image: loaderData.views.map((v: SareeView) => v.url),
               material: loaderData.fabric,
               brand: { "@type": "Brand", name: "Kadha" },
               offers: {
@@ -151,7 +151,7 @@ function Product() {
       sareeSlug: saree.slug,
       sareeName: saree.name,
       customerEmail: notifyEmail,
-      customerPhone: notifyPhone || undefined,
+      ...(notifyPhone ? { customerPhone: notifyPhone } : {}),
       type: status === "coming_soon" ? "coming_soon" : "out_of_stock",
     });
 
