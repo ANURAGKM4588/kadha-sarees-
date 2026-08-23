@@ -18,10 +18,6 @@ export function SiteHeader() {
   const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Hide site header on Admin panel
-  if (location.pathname.startsWith("/admin")) {
-    return null;
-  }
 
   return (
     <div className="sticky top-0 z-40">

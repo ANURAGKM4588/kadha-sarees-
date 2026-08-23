@@ -85,9 +85,8 @@ export function FloatingBagWidget() {
     setIsOpen(false);
   }, [location.pathname]);
 
-  // Do not render on Admin panel, Booking / Checkout, or Bag page
+  // Do not render on Booking / Checkout, or Bag page
   if (
-    location.pathname.startsWith("/admin") ||
     location.pathname === "/booking" ||
     location.pathname === "/bag"
   ) {

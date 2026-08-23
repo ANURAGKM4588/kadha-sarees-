@@ -4,10 +4,6 @@ import { getPublicUrl } from "@/lib/utils";
 export function SiteFooter() {
   const location = useLocation();
 
-  // Hide site footer on Admin panel
-  if (location.pathname.startsWith("/admin")) {
-    return null;
-  }
 
   return (
     <footer className="mt-24 bg-brand-soft text-primary-foreground">
