@@ -243,7 +243,7 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
     } catch { }
   }, [notifyRequests]);
 
-  // Sync from Supabase on mount if keys are configured
+  // Sync from Supabase on mount and subscribe to Realtime updates if configured
   useEffect(() => {
     if (!isSupabaseConfigured) return;
 
@@ -251,36 +251,7 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
       try {
         const { data: dbProducts, error: dbErr } = await supabase.from("products").select("*");
         if (!dbErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
-          const newSlugs = new Set(initialProducts.map((p) => p.slug));
-          const hasNewProducts = dbProducts.some((p) => newSlugs.has(p.slug));
-          if (hasNewProducts) {
-            setProducts(sanitizeProducts(dbProducts));
-          } else {
-            await supabase.from("products").delete().neq("slug", "");
-            for (const item of initialProducts) {
-              await supabase.from("products").upsert({
-                slug: item.slug,
-                name: item.name,
-                weave: item.weave,
-                colour: item.colour,
-                price: item.price,
-                original_price: item.originalPrice,
-                status: item.status,
-                stock_qty: item.stockQty,
-                image: item.image,
-                views: item.views,
-                blurb: item.blurb,
-                fabric: item.fabric,
-                blouse: item.blouse,
-                care: item.care,
-                blouse_availability: item.blouseAvailability,
-                without_blouse_discount: item.withoutBlouseDiscount,
-                cart_adds_count: item.cartAddsCount,
-                published_at: item.publishedAt,
-              });
-            }
-            setProducts(initialProducts);
-          }
+          setProducts(sanitizeProducts(dbProducts));
         } else if (!dbErr && Array.isArray(dbProducts) && dbProducts.length === 0) {
           const localProds = loadInitialProducts();
           if (localProds.length > 0) {
@@ -308,10 +279,12 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
             });
           }
         }
+
         const { data: dbOrders } = await supabase.from("orders").select("*");
         if (dbOrders && dbOrders.length > 0) {
           setOrders(sanitizeOrders(dbOrders));
         }
+
         const { data: dbNotify } = await supabase.from("notify_requests").select("*");
         if (dbNotify && dbNotify.length > 0) {
           setNotifyRequests(dbNotify);
@@ -322,6 +295,43 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
     }
 
     syncSupabaseData();
+
+    // Supabase Realtime Channel: Live synchronization across GitHub Pages and Admin Panel
+    const productsChannel = supabase
+      .channel("realtime:products")
+      .on("postgres_changes", { event: "*", schema: "public", table: "products" }, async () => {
+        const { data: latest } = await supabase.from("products").select("*");
+        if (latest && Array.isArray(latest) && latest.length > 0) {
+          setProducts(sanitizeProducts(latest));
+        }
+      })
+      .subscribe();
+
+    const ordersChannel = supabase
+      .channel("realtime:orders")
+      .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, async () => {
+        const { data: latest } = await supabase.from("orders").select("*");
+        if (latest && Array.isArray(latest)) {
+          setOrders(sanitizeOrders(latest));
+        }
+      })
+      .subscribe();
+
+    const notifyChannel = supabase
+      .channel("realtime:notify_requests")
+      .on("postgres_changes", { event: "*", schema: "public", table: "notify_requests" }, async () => {
+        const { data: latest } = await supabase.from("notify_requests").select("*");
+        if (latest && Array.isArray(latest)) {
+          setNotifyRequests(latest);
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(productsChannel);
+      supabase.removeChannel(ordersChannel);
+      supabase.removeChannel(notifyChannel);
+    };
   }, []);
 
   const updateProductStatus = useCallback((slug: string, status: ProductStatus) => {

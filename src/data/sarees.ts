@@ -178,7 +178,20 @@ export const weaves = [
 export const getSaree = (slug: string): Saree | undefined => {
   if (typeof window !== "undefined") {
     try {
-      for (let i = 35; i >= 1; i--) {
+      const activeRaw = localStorage.getItem("kadha_admin_products_v40");
+      if (activeRaw) {
+        const stored: Saree[] = JSON.parse(activeRaw);
+        const match = stored.find((s) => s.slug === slug);
+        if (match) {
+          return {
+            ...match,
+            image: getPublicUrl(match.image),
+            views: (match.views || []).map((v) => ({ ...v, url: getPublicUrl(v.url) })),
+          };
+        }
+      }
+
+      for (let i = 39; i >= 1; i--) {
         const raw = localStorage.getItem(`kadha_admin_products_v${i}`);
         if (raw) {
           const stored: Saree[] = JSON.parse(raw);
