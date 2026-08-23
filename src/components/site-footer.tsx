@@ -1,4 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
+import { getPublicUrl } from "@/lib/utils";
 
 export function SiteFooter() {
   const location = useLocation();
@@ -14,7 +15,7 @@ export function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
             <img
-              src="./logo/BRAND IDENTITY white.png"
+              src={getPublicUrl("logo/BRAND IDENTITY white.png")}
               alt="Kadha Sarees"
               width={160}
               height={50}

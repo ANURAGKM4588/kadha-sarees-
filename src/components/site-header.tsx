@@ -3,6 +3,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
 import { ShoppingBag, Menu, X, MessageSquare, User as UserIcon } from "lucide-react";
+import { getPublicUrl } from "@/lib/utils";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -30,7 +31,7 @@ export function SiteHeader() {
           {/* Brand Logo */}
           <Link to="/" className="flex min-w-0 items-center">
             <img
-              src="./logo/BRAND IDENTITY.png"
+              src={getPublicUrl("logo/BRAND IDENTITY.png")}
               alt="Kadha Sarees Store"
               width={160}
               height={44}
