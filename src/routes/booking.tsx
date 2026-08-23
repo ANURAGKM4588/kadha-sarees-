@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { formatPrice, getSaree } from "@/data/sarees";
+import { getPublicUrl } from "@/lib/utils";
 import { useCart } from "@/lib/cart";
 import { useShopStore, type Order } from "@/lib/shop-store";
 import { useAuth } from "@/lib/auth";
@@ -463,7 +464,7 @@ function Booking() {
               return (
                 <li key={itemKey} className="flex items-center gap-4 pt-4 first:pt-0">
                   <img
-                    src={item.saree.image}
+                    src={getPublicUrl(item.saree.image)}
                     alt={item.saree.name}
                     width={64}
                     height={84}

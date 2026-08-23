@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useCart } from "@/lib/cart";
 import { useShopStore } from "@/lib/shop-store";
 import { formatPrice, getSaree } from "@/data/sarees";
+import { getPublicUrl } from "@/lib/utils";
 import {
   ShoppingBag,
   ChevronDown,
@@ -148,7 +149,7 @@ export function FloatingBagWidget() {
                   className="h-16 w-14 shrink-0 overflow-hidden rounded-xl bg-background border border-border/60"
                 >
                   <img
-                    src={line.saree.image}
+                    src={getPublicUrl(line.saree.image)}
                     alt={line.saree.name}
                     className="h-full w-full object-cover object-center"
                   />

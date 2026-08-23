@@ -9,6 +9,7 @@ import {
 } from "react";
 import { sarees as defaultSarees, type Saree } from "@/data/sarees";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { resolveAssetUrl } from "@/lib/utils";
 
 export type ProductStatus = "in_stock" | "out_of_stock" | "coming_soon";
 
@@ -78,7 +79,7 @@ type ShopStoreContextType = {
   resetStore: () => void;
 };
 
-const PRODUCTS_KEY = "kadha_admin_products_v40";
+const PRODUCTS_KEY = "kadha_admin_products_v55";
 const ORDERS_KEY = "kadha_admin_orders_v3";
 const NOTIFY_KEY = "kadha_admin_notify_v3";
 
@@ -112,8 +113,9 @@ function sanitizeProducts(prods: any[]): ExtendedSaree[] {
         cleanImage.includes("turmeric") ||
         cleanImage.includes("%2520")
       ) {
-        cleanImage = defaultMatch?.image || "/Product/Beige%20Ikat%20Mulmul%20Saree.png";
+        cleanImage = defaultMatch?.image || "Product/Beige Ikat Mulmul Saree.png";
       }
+      cleanImage = resolveAssetUrl(cleanImage);
 
       let updatedViews = Array.isArray(p.views) && p.views.length > 0 ? p.views : null;
       if (
@@ -123,6 +125,11 @@ function sanitizeProducts(prods: any[]): ExtendedSaree[] {
         )
       ) {
         updatedViews = defaultMatch?.views || [{ url: cleanImage, label: "Full drape" }];
+      } else {
+        updatedViews = updatedViews.map((v: any) => ({
+          ...v,
+          url: resolveAssetUrl(v.url),
+        }));
       }
 
       return {

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth, type SavedAddress } from "@/lib/auth";
 import { useShopStore } from "@/lib/shop-store";
 import { formatPrice } from "@/data/sarees";
+import { getPublicUrl } from "@/lib/utils";
 import {
   User,
   MapPin,
@@ -353,7 +354,7 @@ function AccountPage() {
                       {order.items.map((item) => (
                         <div key={item.slug} className="flex items-center gap-3 bg-muted/40 p-2.5 rounded-2xl border border-border">
                           {item.image && (
-                            <img src={item.image} alt={item.name} className="h-12 w-9 rounded-lg object-cover bg-secondary" />
+                            <img src={getPublicUrl(item.image)} alt={item.name} className="h-12 w-9 rounded-lg object-cover bg-secondary" />
                           )}
                           <div>
                             <p className="font-display text-xs font-semibold text-foreground">{item.name}</p>

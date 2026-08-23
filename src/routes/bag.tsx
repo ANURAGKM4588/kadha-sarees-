@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { formatPrice, getSaree } from "@/data/sarees";
 import { useCart } from "@/lib/cart";
+import { getPublicUrl } from "@/lib/utils";
 
 export const Route = createFileRoute("/bag")({
   head: () => ({
@@ -59,7 +60,7 @@ function Bag() {
               return (
                 <li key={itemKey} className="flex gap-6 py-6">
                   <img
-                    src={item.saree.image}
+                    src={getPublicUrl(item.saree.image)}
                     alt={item.saree.name}
                     width={912}
                     height={1200}
