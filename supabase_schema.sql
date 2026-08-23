@@ -67,14 +67,14 @@ ALTER TABLE public.orders DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notify_requests DISABLE ROW LEVEL SECURITY;
 
 -- 4. Supabase Storage Bucket for Product Images
--- Run this in SQL Editor to create public 'sarees' storage bucket:
+-- SQL to configure public access for your 'Product images' bucket:
 INSERT INTO storage.buckets (id, name, public) 
-VALUES ('sarees', 'sarees', true) 
+VALUES ('Product images', 'Product images', true) 
 ON CONFLICT (id) DO NOTHING;
 
--- Public Storage Access Policies for 'sarees' Bucket
-CREATE POLICY "Public Read Access on Sarees Bucket" ON storage.objects
-  FOR SELECT USING (bucket_id = 'sarees');
+-- Public Storage Access Policies for 'Product images' Bucket
+CREATE POLICY "Public Read Access on Product images Bucket" ON storage.objects
+  FOR SELECT USING (bucket_id = 'Product images');
 
-CREATE POLICY "Public Insert Access on Sarees Bucket" ON storage.objects
-  FOR INSERT WITH CHECK (bucket_id = 'sarees');
+CREATE POLICY "Public Insert Access on Product images Bucket" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'Product images');

@@ -1684,7 +1684,7 @@ function compressFileToBlob(file: File, maxWidth = 1000, quality = 0.8): Promise
   });
 }
 
-// UPLOADS IMAGE FILE TO SUPABASE STORAGE 'sarees' BUCKET AND RETURNS PUBLIC CDN URL
+// UPLOADS IMAGE FILE TO SUPABASE STORAGE 'Product images' BUCKET AND RETURNS PUBLIC CDN URL
 export async function uploadToSupabaseStorage(file: File): Promise<string> {
   if (!isSupabaseConfigured) {
     return compressImageFile(file, 800, 0.75);
@@ -1693,31 +1693,30 @@ export async function uploadToSupabaseStorage(file: File): Promise<string> {
   try {
     const compressedBlob = await compressFileToBlob(file, 1000, 0.8);
     const fileName = `saree_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.jpg`;
-    const filePath = `products/${fileName}`;
 
-    // Upload to 'sarees' bucket
-    const { data, error } = await supabase.storage.from("sarees").upload(filePath, compressedBlob, {
-      contentType: "image/jpeg",
-      upsert: true,
-    });
+    // Candidate bucket names matching the user's Supabase Storage dashboard bucket 'Product images'
+    const bucketCandidates = [
+      "Product images",
+      "Product-images",
+      "product-images",
+      "product_images",
+      "Product_images",
+      "sarees",
+      "products",
+    ];
 
-    if (!error && data) {
-      const { data: publicUrlData } = supabase.storage.from("sarees").getPublicUrl(data.path);
-      if (publicUrlData?.publicUrl) {
-        return publicUrlData.publicUrl;
-      }
-    }
+    for (const bucketName of bucketCandidates) {
+      const { data, error } = await supabase.storage.from(bucketName).upload(fileName, compressedBlob, {
+        contentType: "image/jpeg",
+        upsert: true,
+      });
 
-    // Try 'products' bucket fallback if 'sarees' bucket is missing
-    const { data: dataProd, error: errorProd } = await supabase.storage.from("products").upload(filePath, compressedBlob, {
-      contentType: "image/jpeg",
-      upsert: true,
-    });
-
-    if (!errorProd && dataProd) {
-      const { data: publicUrlData } = supabase.storage.from("products").getPublicUrl(dataProd.path);
-      if (publicUrlData?.publicUrl) {
-        return publicUrlData.publicUrl;
+      if (!error && data) {
+        const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(data.path);
+        if (publicUrlData?.publicUrl) {
+          console.log(`Successfully uploaded image to Supabase Storage bucket '${bucketName}':`, publicUrlData.publicUrl);
+          return publicUrlData.publicUrl;
+        }
       }
     }
 
