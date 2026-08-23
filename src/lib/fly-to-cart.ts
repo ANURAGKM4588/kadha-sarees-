@@ -48,18 +48,10 @@ export function triggerFlyToCartAnimation(sourceImgElement: HTMLElement | null) 
   clone.style.opacity = "0";
   clone.style.borderRadius = "50%";
 
-  // Trigger pulse effect on bag icon at the EXACT INSTANT the product clone enters the bag
+  // Remove floating clone image once fly animation completes
   setTimeout(() => {
     if (clone.parentNode) {
       clone.parentNode.removeChild(clone);
-    }
-
-    // Instant pop/pulse animation on the bag button
-    if (targetBagElement) {
-      targetBagElement.classList.add("scale-125", "ring-4", "ring-gold/60", "bg-gold", "text-brand-soft");
-      setTimeout(() => {
-        targetBagElement.classList.remove("scale-125", "ring-4", "ring-gold/60", "bg-gold", "text-brand-soft");
-      }, 300);
     }
   }, DURATION - 20); // 480ms: perfectly synced with exact entry time
 }

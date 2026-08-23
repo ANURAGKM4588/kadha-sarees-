@@ -18,7 +18,6 @@ export function FloatingBagWidget() {
   const { lines, count, setQty, remove } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [justAdded, setJustAdded] = useState(false);
   const lastScrollY = useRef(0);
   const prevCountRef = useRef(count);
   const ticking = useRef(false);
@@ -58,18 +57,13 @@ export function FloatingBagWidget() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Trigger animate-in and glowing pop effect when product is added to the bag
+  // Trigger animate-in smoothly when product is added to the bag
   useEffect(() => {
     if (count > prevCountRef.current) {
       setIsVisible(true);
-      setJustAdded(true);
       if (typeof window !== "undefined") {
         lastScrollY.current = window.scrollY;
       }
-      const timer = setTimeout(() => {
-        setJustAdded(false);
-      }, 1200);
-      return () => clearTimeout(timer);
     }
     prevCountRef.current = count;
   }, [count]);
@@ -253,25 +247,17 @@ export function FloatingBagWidget() {
         id="floating-bag-btn"
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative flex items-center gap-2.5 rounded-full px-5 py-3 backdrop-blur-xl transition-all duration-300 active:scale-95 cursor-pointer border border-white/20 transform-gpu ${
-          justAdded
-            ? "bg-gold text-brand-soft ring-4 ring-gold/70 scale-110 shadow-[0_0_35px_rgba(212,175,55,0.6)] animate-bounce"
-            : "bg-brand text-white hover:scale-105 hover:bg-brand-soft shadow-xl"
-        }`}
+        className="group relative flex items-center gap-2.5 rounded-full bg-brand px-5 py-3 text-white backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:bg-brand-soft active:scale-95 cursor-pointer shadow-xl border border-white/20 transform-gpu"
       >
         {/* White Shopping Bag Icon with Top-Right Badge */}
         <div className="relative inline-flex items-center justify-center">
-          <ShoppingBag className={`h-5 w-5 transition-transform duration-300 ${justAdded ? "scale-125 text-brand-soft animate-pulse" : "text-white"}`} />
-          <span className={`absolute -top-2 -right-2.5 grid h-5 min-w-5 place-items-center rounded-full px-1 text-[10px] font-extrabold ring-2 transition-all duration-300 ${
-            justAdded 
-              ? "bg-white text-brand ring-brand scale-125 animate-in zoom-in-125 duration-300"
-              : "bg-gold text-brand-soft ring-brand"
-          }`}>
+          <ShoppingBag className="h-5 w-5 text-white" />
+          <span className="absolute -top-2 -right-2.5 grid h-5 min-w-5 place-items-center rounded-full bg-gold px-1 text-[10px] font-extrabold text-brand-soft ring-2 ring-brand">
             {count}
           </span>
         </div>
 
-        <span className={`text-xs font-bold uppercase tracking-[0.2em] pl-1 transition-colors duration-300 ${justAdded ? "text-brand-soft font-black" : "text-white"}`}>
+        <span className="text-xs font-bold uppercase tracking-[0.2em] text-white pl-1">
           Bag
         </span>
       </button>
