@@ -310,10 +310,10 @@ function AccountPage() {
               <p className="mt-3 font-display text-lg text-brand-soft">No bookings found</p>
               <p className="mt-1 text-xs text-muted-foreground">You haven't placed any saree bookings with this account yet.</p>
               <Link
-                to="/shop"
+                to="/booking"
                 className="mt-6 inline-block rounded-full bg-brand px-8 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground hover:bg-brand-soft shadow-md"
               >
-                Browse Saree Catalog →
+                Book a Saree →
               </Link>
             </div>
           ) : (

@@ -1,9 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeroSectionOption6 } from "@/components/hero-section-option6";
 import weaver from "@/assets/weaver.jpg";
-import { SareeCard } from "@/components/saree-card";
-import { sarees, weaves } from "@/data/sarees";
-import { useShopStore } from "@/lib/shop-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,10 +22,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { products } = useShopStore();
-  const list = products || [];
-  const featured = list[0];
-
   return (
     <div className="pb-4">
       <HeroSectionOption6 />
@@ -54,39 +47,6 @@ function Index() {
             </span>
           ))}
         </div>
-      </section>
-
-
-
-      {/* Collection rail */}
-      <section className="mx-auto max-w-[1400px] px-5 pt-16 lg:px-8">
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
-          <div className="min-w-0">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-brand">New drapes</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-brand-soft sm:text-4xl">
-              This month at the house
-            </h2>
-          </div>
-          <Link
-            to="/shop"
-            className="shrink-0 rounded-full border border-border px-6 py-3 text-sm text-brand-soft transition-colors hover:bg-secondary"
-          >
-            All sarees →
-          </Link>
-        </div>
-
-        {list.length > 0 ? (
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-            {list.map((saree) => (
-              <SareeCard key={saree.slug} saree={saree} />
-            ))}
-          </div>
-        ) : (
-          <div className="mt-8 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
-            <p className="font-display text-xl font-semibold text-brand-soft">New Collection Launching Soon ✨</p>
-            <p className="mt-2 text-xs text-muted-foreground">Our weavers are crafting new handloom sarees. Check back shortly!</p>
-          </div>
-        )}
       </section>
 
       {/* Story */}

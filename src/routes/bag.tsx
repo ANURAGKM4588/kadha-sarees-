@@ -45,10 +45,10 @@ function Bag() {
         <div className="mt-8">
           <p className="text-sm text-muted-foreground">Your bag is empty.</p>
           <Link
-            to="/shop"
+            to="/"
             className="mt-6 inline-block rounded-full border border-brand px-8 py-3 text-[11px] uppercase tracking-[0.22em] text-brand transition-colors hover:bg-brand hover:text-primary-foreground whitespace-nowrap shrink-0"
           >
-            Browse sarees
+            Return to Home
           </Link>
         </div>
       ) : (

@@ -135,10 +135,10 @@ function About() {
             </p>
             <div className="pt-2">
               <Link
-                to="/shop"
+                to="/booking"
                 className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-950 transition-all hover:bg-gold-soft hover:scale-105 shadow-md cursor-pointer"
               >
-                Explore Our Collection
+                Book Your Drape
               </Link>
             </div>
           </div>

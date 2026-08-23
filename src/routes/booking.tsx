@@ -209,10 +209,10 @@ function Booking() {
         </div>
 
         <Link
-          to="/shop"
+          to="/"
           className="mt-10 inline-block rounded-full bg-brand px-10 py-3.5 text-[11px] uppercase tracking-[0.22em] font-semibold text-primary-foreground transition-colors hover:bg-brand-soft shadow-md"
         >
-          Continue Shopping
+          Return to Home
         </Link>
       </div>
     );
@@ -224,10 +224,10 @@ function Booking() {
         <h1 className="font-display text-3xl">Nothing to book yet</h1>
         <p className="mt-3 text-xs text-muted-foreground">Your shopping bag is currently empty.</p>
         <Link
-          to="/shop"
+          to="/"
           className="mt-8 inline-block rounded-full border border-brand px-8 py-3 text-[11px] uppercase tracking-[0.22em] text-brand transition-colors hover:bg-brand hover:text-primary-foreground"
         >
-          Browse sarees
+          Return to Home
         </Link>
       </div>
     );
