@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { HeroSectionOption6 } from "@/components/hero-section-option6";
+import { HeroSectionOption4 } from "@/components/hero-section-option4";
 import { FreshProductSection } from "@/components/fresh-product-section";
 import weaver from "@/assets/weaver.jpg";
 
@@ -24,12 +24,12 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="pb-4">
-      <HeroSectionOption6 />
+    <div className="pb-4 bg-[#fdfbf7]">
+      <HeroSectionOption4 />
 
       {/* Marquee */}
-      <section className="mt-14 overflow-hidden bg-brand-soft py-4 border-y border-gold/30 shadow-xs">
-        <div className="marquee-track flex w-max gap-10 whitespace-nowrap text-sm text-primary-foreground/90 font-medium">
+      <section className="mt-14 overflow-hidden bg-cream py-4 border-y border-gold/40 shadow-2xs">
+        <div className="marquee-track flex w-max gap-10 whitespace-nowrap text-sm text-brand-soft font-semibold tracking-wide">
           {Array.from({ length: 2 }).map((_, i) => (
             <span key={i} className="flex gap-10">
               {[
@@ -54,7 +54,7 @@ function Index() {
       <FreshProductSection />
 
       {/* Story */}
-      <section className="mt-20 bg-cream py-20">
+      <section className="mt-20 bg-cream/70 py-20 border-y border-border/60">
         <div className="mx-auto grid max-w-[1400px] items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
           <div className="relative">
             <img
@@ -63,7 +63,7 @@ function Index() {
               width={1408}
               height={912}
               loading="lazy"
-              className="aspect-[4/3] w-full rounded-[2rem] object-cover"
+              className="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-lg border border-gold/20"
             />
           </div>
           <div>
@@ -72,7 +72,7 @@ function Index() {
             </p>
             <h2 className="mt-3 font-display text-3xl font-semibold leading-[1.05] tracking-[-0.02em] text-brand-soft sm:text-[2.75rem]">
               Every saree carries the name of{" "}
-              <span className="font-serif font-normal italic">the hands that made it</span>
+              <span className="font-serif font-normal italic text-gold">the hands that made it</span>
             </h2>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
               Kadha works with six family workshops across Kanchipuram, Banaras and Chanderi. We
@@ -85,7 +85,7 @@ function Index() {
                 { k: "Small batch", v: "Never mass-made" },
                 { k: "Fair pay", v: "Paid upfront" },
               ].map((item) => (
-                <div key={item.k} className="rounded-2xl bg-background p-5">
+                <div key={item.k} className="rounded-2xl bg-card border border-border p-5 shadow-xs">
                   <p className="font-display text-base font-medium text-brand-soft">{item.k}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{item.v}</p>
                 </div>
@@ -93,7 +93,7 @@ function Index() {
             </div>
             <Link
               to="/about"
-              className="mt-9 inline-block rounded-full bg-ink px-8 py-4 text-sm font-medium text-primary-foreground transition-transform hover:scale-[1.02]"
+              className="mt-9 inline-block rounded-full bg-brand px-8 py-4 text-sm font-medium text-primary-foreground transition-transform hover:scale-[1.02] shadow-md"
             >
               Read our story
             </Link>
@@ -146,7 +146,7 @@ function Index() {
           ].map((t) => (
             <figure
               key={t.n}
-              className="rounded-[2rem] bg-secondary p-8 transition-colors hover:bg-cream"
+              className="rounded-[2rem] bg-card border border-border/80 p-8 shadow-xs transition-colors hover:bg-cream"
             >
               <p className="font-serif text-2xl leading-snug text-brand-soft">“{t.q}”</p>
               <figcaption className="mt-6 text-xs text-muted-foreground">{t.n}</figcaption>
@@ -157,19 +157,19 @@ function Index() {
 
       {/* Booking CTA */}
       <section className="mx-auto mt-20 max-w-[1400px] px-5 lg:px-8">
-        <div className="grid items-center gap-8 overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-brand-soft via-brand to-brand-soft px-8 py-14 text-primary-foreground shadow-2xl border border-gold/30 sm:px-12 lg:grid-cols-[1.2fr_auto]">
+        <div className="grid items-center gap-8 overflow-hidden rounded-[2.5rem] bg-cream border-2 border-gold/40 px-8 py-14 text-brand-soft shadow-xl sm:px-12 lg:grid-cols-[1.2fr_auto]">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-gold">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold">
               Two-minute booking
             </p>
             <h2 className="mt-4 max-w-xl font-display text-3xl font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[2.75rem]">
               Tell us the occasion, we'll{" "}
-              <span className="font-serif font-normal italic text-gold">reserve the drape</span>
+              <span className="font-serif font-normal italic text-brand">reserve the drape</span>
             </h2>
           </div>
           <Link
             to="/booking"
-            className="w-fit rounded-full bg-primary-foreground px-9 py-4 text-sm font-medium text-ink transition-transform hover:scale-[1.03]"
+            className="w-fit rounded-full bg-brand px-9 py-4 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-transform hover:scale-[1.03] shadow-md"
           >
             Book a saree →
           </Link>

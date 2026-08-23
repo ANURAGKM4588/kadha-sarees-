@@ -216,13 +216,18 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
+:root {
+  color-scheme: light !important;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
   }
 
   html, body {
-    background-color: var(--background);
-    color: var(--foreground);
+    color-scheme: light !important;
+    background-color: #fdfbf7 !important;
+    color: #1a2e26 !important;
   }
 }
