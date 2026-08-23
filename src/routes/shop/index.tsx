@@ -30,7 +30,7 @@ export const Route = createFileRoute("/shop/")({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Shop Handwoven Sarees | Kadha",
-          url: "https://thread-so-fine.lovable.app/shop",
+          url: "https://www.kadha.shop/shop",
           description:
             "The full Kadha collection of handwoven sarees — Kanjivaram, Chettinad, ikat and cotton.",
           mainEntity: {
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/shop/")({
             itemListElement: sarees.map((s, i) => ({
               "@type": "ListItem",
               position: i + 1,
-              url: `https://thread-so-fine.lovable.app/shop/${s.slug}`,
+              url: `https://www.kadha.shop/shop/${s.slug}`,
               name: s.name,
             })),
           },

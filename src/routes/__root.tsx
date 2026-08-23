@@ -10,7 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
 import { ShopStoreProvider } from "../lib/shop-store";
 import { AuthProvider } from "../lib/auth";
@@ -43,9 +42,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -114,7 +110,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Kadha",
-          url: "https://thread-so-fine.lovable.app",
+          url: "https://www.kadha.shop",
           description:
             "Kadha: a small, considered collection of handwoven sarees. The story begins here.",
           slogan: "The Story Begins Here",
