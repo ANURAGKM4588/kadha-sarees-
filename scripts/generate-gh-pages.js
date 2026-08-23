@@ -31,7 +31,7 @@ for (const targetDir of targetDirs) {
     fs.writeFileSync(path.join(targetDir, "404.html"), indexContent);
   }
 
-  // fs.writeFileSync(path.join(targetDir, "CNAME"), "kadha.shop\n");
+  fs.writeFileSync(path.join(targetDir, "CNAME"), "www.kadha.shop\n");
   fs.writeFileSync(path.join(targetDir, ".nojekyll"), "");
 }
 
