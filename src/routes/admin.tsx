@@ -9,6 +9,7 @@ import {
   type Order,
 } from "@/lib/shop-store";
 import { formatPrice, weaves, type BlouseAvailability } from "@/data/sarees";
+import { getPublicUrl } from "@/lib/utils";
 
 import {
   DollarSign,
@@ -814,7 +815,7 @@ export function AdminPanel() {
 
                       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-secondary shadow-xs">
                       <img
-                        src={p.image}
+                        src={getPublicUrl(p.image)}
                         alt={p.name}
                         className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                       />
@@ -1097,7 +1098,7 @@ export function AdminPanel() {
                       .map((p) => (
                         <tr key={p.slug} className="hover:bg-muted/30">
                           <td className="px-6 py-4 flex items-center gap-3">
-                            <img src={p.image} alt={p.name} className="h-10 w-10 rounded-lg object-cover bg-secondary" />
+                            <img src={getPublicUrl(p.image)} alt={p.name} className="h-10 w-10 rounded-lg object-cover bg-secondary" />
                             <span className="font-medium text-foreground">{p.name}</span>
                           </td>
                           <td className="px-6 py-4 text-xs font-semibold text-gold">{p.weave}</td>
@@ -1577,7 +1578,7 @@ export function AdminPanel() {
                     <div key={idx} className="flex items-center justify-between gap-4 pt-3 first:pt-0">
                       <div className="flex items-center gap-3 min-w-0">
                         <img
-                          src={item.image}
+                          src={getPublicUrl(item.image)}
                           alt={item.name}
                           className="h-14 w-11 rounded-xl object-cover bg-secondary border border-border shrink-0"
                         />
@@ -1921,7 +1922,7 @@ function AddProductModal({
               {/* Cover Image Preview or Dropzone */}
               {image ? (
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border-2 border-gold/50 bg-slate-100 shadow-xs group">
-                  <img src={image} alt="Cover Page" className="h-full w-full object-cover" />
+                  <img src={getPublicUrl(image)} alt="Cover Page" className="h-full w-full object-cover" />
                   <span className="absolute top-2 left-2 rounded-full bg-gold px-2.5 py-1 text-[10px] font-bold text-brand-soft shadow-xs">
                     ★ Cover Page Image
                   </span>
@@ -1986,7 +1987,7 @@ function AddProductModal({
                         }`}
                       >
                         <img
-                          src={view.url}
+                          src={getPublicUrl(view.url)}
                           alt="Gallery item"
                           className="h-12 w-10 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200"
                         />
@@ -2240,7 +2241,7 @@ function EditProductModal({
       setPrice(product.price);
       setOriginalPrice(product.originalPrice || "");
       setStatus(product.status);
-      setImage(product.image || "/Product/Beige%20Ikat%20Mulmul%20Saree.png");
+      setImage(product.image || getPublicUrl("Product/Beige%20Ikat%20Mulmul%20Saree.png"));
       setBlurb(product.blurb);
       setFabric(product.fabric);
       setBlouse(product.blouse);
@@ -2251,7 +2252,7 @@ function EditProductModal({
       const initialViews =
         product.views && product.views.length > 0
           ? product.views
-          : [{ url: product.image || "/Product/Beige%20Ikat%20Mulmul%20Saree.png", label: "Cover Page Image" }];
+          : [{ url: product.image || getPublicUrl("Product/Beige%20Ikat%20Mulmul%20Saree.png"), label: "Cover Page Image" }];
       setViews(initialViews);
       setErrorMessage(null);
       setIsCompressing(false);
@@ -2425,7 +2426,7 @@ function EditProductModal({
 
               {/* Cover Image Preview */}
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border-2 border-gold/50 bg-slate-100 shadow-xs group">
-                <img src={image} alt="Cover Page" className="h-full w-full object-cover" />
+                <img src={getPublicUrl(image)} alt="Cover Page" className="h-full w-full object-cover" />
                 <span className="absolute top-2 left-2 rounded-full bg-gold px-2.5 py-1 text-[10px] font-bold text-brand-soft shadow-xs whitespace-nowrap">
                   ★ Cover Page Image
                 </span>
@@ -2480,7 +2481,7 @@ function EditProductModal({
                         }`}
                       >
                         <img
-                          src={view.url}
+                          src={getPublicUrl(view.url)}
                           alt="Gallery item"
                           className="h-12 w-10 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200"
                         />
