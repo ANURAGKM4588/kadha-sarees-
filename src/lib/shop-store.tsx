@@ -256,10 +256,40 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
 
     async function syncSupabaseData() {
       try {
-        const { data: dbProducts, error: dbErr } = await supabase.from("products").select("*");
+        const { data: dbProducts, error: dbErr } = await supabase.from("products").select("*").order("published_at", { ascending: false });
         if (!dbErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
           const sanitized = sanitizeProducts(dbProducts);
           setProducts(sanitized);
+
+          // Auto-sync any local products from localStorage to Supabase cloud if missing
+          const localProds = loadInitialProducts();
+          if (localProds && localProds.length > 0) {
+            localProds.forEach((item) => {
+              const existsInDb = dbProducts.some((dbp) => dbp.slug === item.slug);
+              if (!existsInDb) {
+                supabase.from("products").upsert({
+                  slug: item.slug,
+                  name: item.name,
+                  weave: item.weave,
+                  colour: item.colour,
+                  price: item.price,
+                  original_price: item.originalPrice,
+                  status: item.status,
+                  stock_qty: item.stockQty,
+                  image: item.image,
+                  views: item.views,
+                  blurb: item.blurb,
+                  fabric: item.fabric,
+                  blouse: item.blouse,
+                  care: item.care,
+                  blouse_availability: item.blouseAvailability,
+                  without_blouse_discount: item.withoutBlouseDiscount,
+                  cart_adds_count: item.cartAddsCount,
+                  published_at: item.publishedAt,
+                }).then();
+              }
+            });
+          }
 
           // Auto-heal any legacy or un-prefixed image rows in Supabase database
           dbProducts.forEach((row) => {
