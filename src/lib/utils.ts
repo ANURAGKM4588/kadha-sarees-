@@ -21,3 +21,11 @@ export function resolveAssetUrl(path: string): string {
 }
 
 export const getPublicUrl = resolveAssetUrl;
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(price);
+}

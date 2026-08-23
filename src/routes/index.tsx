@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeroSectionOption6 } from "@/components/hero-section-option6";
+import { FreshProductSection } from "@/components/fresh-product-section";
 import weaver from "@/assets/weaver.jpg";
 
 export const Route = createFileRoute("/")({
@@ -48,6 +49,9 @@ function Index() {
           ))}
         </div>
       </section>
+
+      {/* Fresh Product Section */}
+      <FreshProductSection />
 
       {/* Story */}
       <section className="mt-20 bg-cream py-20">

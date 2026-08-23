@@ -7,6 +7,7 @@ import { getPublicUrl } from "@/lib/utils";
 
 const navLinks = [
   { to: "/", label: "Home" },
+  { to: "/shop", label: "Saree Catalog" },
   { to: "/booking", label: "Checkout" },
   { to: "/about", label: "About Us" },
 ];
