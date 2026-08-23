@@ -5,6 +5,7 @@ import { useShopStore } from "@/lib/shop-store";
 import { useCart } from "@/lib/cart";
 import { triggerFlyToCartAnimation } from "@/lib/fly-to-cart";
 import { ShoppingBag, Check } from "lucide-react";
+import { getPublicUrl } from "@/lib/utils";
 
 export function SareeCard({ saree, tall = false }: { saree: Saree; tall?: boolean }) {
   const { products, incrementCartAdds } = useShopStore();
@@ -21,7 +22,7 @@ export function SareeCard({ saree, tall = false }: { saree: Saree; tall?: boolea
 
   // Extract all product view images (Full drape, Model, Weave detail)
   const viewImages = saree.views && saree.views.length > 0 ? saree.views : [{ url: saree.image, label: "Full drape" }];
-  const currentImage = viewImages[currentViewIndex]?.url || saree.image;
+  const currentImage = getPublicUrl(viewImages[currentViewIndex]?.url || saree.image);
 
   // Fast auto-carousel on mouse hover (600ms per slide)
   useEffect(() => {

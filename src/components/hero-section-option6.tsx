@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { getPublicUrl } from "@/lib/utils";
 
 export function HeroSectionOption6() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +43,7 @@ export function HeroSectionOption6() {
       >
         {/* BASE LAYER: CUSTOM BLACK & WHITE HERO IMAGE */}
         <img
-          src="./herosection/Herosection-bw.png"
+          src={getPublicUrl("herosection/Herosection-bw.png")}
           alt="Kadha Handwoven Sarees Collection"
           width={1920}
           height={1080}
@@ -60,7 +61,7 @@ export function HeroSectionOption6() {
           }}
         >
           <img
-            src="./herosection/Herosection.png"
+            src={getPublicUrl("herosection/Herosection.png")}
             alt="Kadha Handwoven Sarees Collection (Color Reveal)"
             width={1920}
             height={1080}

@@ -6,6 +6,7 @@ import { formatPrice, getSaree, sarees, type Saree, type SareeView } from "@/dat
 import { useCart } from "@/lib/cart";
 import { useShopStore } from "@/lib/shop-store";
 import { triggerFlyToCartAnimation } from "@/lib/fly-to-cart";
+import { getPublicUrl } from "@/lib/utils";
 import {
   Bell,
   Check,
@@ -122,10 +123,14 @@ function Product() {
 
   const mainImgRef = useRef<HTMLImageElement>(null);
 
-  const gallery: SareeView[] =
+  const rawGallery: SareeView[] =
     storedProduct?.views && storedProduct.views.length > 0 ? storedProduct.views : saree.views;
-  const current: SareeView =
-    gallery[Math.min(active, gallery.length - 1)] ?? { url: saree.image, label: "Full drape" };
+  const gallery: SareeView[] = (rawGallery || []).map((v) => ({
+    ...v,
+    url: getPublicUrl(v.url),
+  }));
+  const rawCurrent = gallery[Math.min(active, gallery.length - 1)] ?? { url: saree.image, label: "Full drape" };
+  const current: SareeView = { ...rawCurrent, url: getPublicUrl(rawCurrent.url) };
 
   const related = products.filter((s) => s.slug !== saree.slug).slice(0, 3);
 

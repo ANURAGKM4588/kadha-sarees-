@@ -31,6 +31,8 @@ import hero3 from "@/assets/hero-3.jpg";
 import heroBanner from "@/assets/hero-banner.jpg";
 import weaver from "@/assets/weaver.jpg";
 
+import { getPublicUrl } from "@/lib/utils";
+
 export const sarees: Saree[] = [
   {
     slug: "beige-ikat-mulmul-saree",
@@ -39,8 +41,8 @@ export const sarees: Saree[] = [
     colour: "Beige",
     price: 2999,
     originalPrice: 3499,
-    image: "./Product/Beige%20Ikat%20Mulmul%20Saree.png",
-    views: [{ url: "./Product/Beige%20Ikat%20Mulmul%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Beige%20Ikat%20Mulmul%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Beige%20Ikat%20Mulmul%20Saree.png"), label: "Full drape" }],
     blurb: "Handwoven Beige Ikat Mulmul Cotton Saree.",
     fabric: "Pure Mulmul Cotton",
     blouse: "Unstitched blouse piece included",
@@ -55,8 +57,8 @@ export const sarees: Saree[] = [
     colour: "Coffee Brown",
     price: 3199,
     originalPrice: 3699,
-    image: "./Product/Coffee%20Brown%20Sungudi%20Cotton%20Saree.png",
-    views: [{ url: "./Product/Coffee%20Brown%20Sungudi%20Cotton%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Coffee%20Brown%20Sungudi%20Cotton%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Coffee%20Brown%20Sungudi%20Cotton%20Saree.png"), label: "Full drape" }],
     blurb: "Handwoven Coffee Brown Sungudi Cotton Saree.",
     fabric: "Pure Sungudi Cotton",
     blouse: "Unstitched blouse piece included",
@@ -71,8 +73,8 @@ export const sarees: Saree[] = [
     colour: "Multicolor",
     price: 2899,
     originalPrice: 3399,
-    image: "./Product/Multicolor%20Mulmul%20Cotton%20Saree.png",
-    views: [{ url: "./Product/Multicolor%20Mulmul%20Cotton%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Multicolor%20Mulmul%20Cotton%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Multicolor%20Mulmul%20Cotton%20Saree.png"), label: "Full drape" }],
     blurb: "Vibrant Multicolor Mulmul Cotton Saree.",
     fabric: "Pure Mulmul Cotton",
     blouse: "Unstitched blouse piece included",
@@ -87,8 +89,8 @@ export const sarees: Saree[] = [
     colour: "Mustard Yellow",
     price: 3299,
     originalPrice: 3799,
-    image: "./Product/Mustard%20Yellow%20Sungudi%20Cotton%20Saree.png",
-    views: [{ url: "./Product/Mustard%20Yellow%20Sungudi%20Cotton%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Mustard%20Yellow%20Sungudi%20Cotton%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Mustard%20Yellow%20Sungudi%20Cotton%20Saree.png"), label: "Full drape" }],
     blurb: "Traditional Mustard Yellow Sungudi Cotton Saree.",
     fabric: "Pure Sungudi Cotton",
     blouse: "Unstitched blouse piece included",
@@ -103,8 +105,8 @@ export const sarees: Saree[] = [
     colour: "Orange",
     price: 3199,
     originalPrice: 3699,
-    image: "./Product/Orange%20Sungudi%20Cotton%20Saree.png",
-    views: [{ url: "./Product/Orange%20Sungudi%20Cotton%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Orange%20Sungudi%20Cotton%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Orange%20Sungudi%20Cotton%20Saree.png"), label: "Full drape" }],
     blurb: "Handwoven Orange Sungudi Cotton Saree.",
     fabric: "Pure Sungudi Cotton",
     blouse: "Unstitched blouse piece included",
@@ -119,8 +121,8 @@ export const sarees: Saree[] = [
     colour: "Red",
     price: 3399,
     originalPrice: 3899,
-    image: "./Product/Red%20Sungudi%20Saree.png",
-    views: [{ url: "./Product/Red%20Sungudi%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Red%20Sungudi%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Red%20Sungudi%20Saree.png"), label: "Full drape" }],
     blurb: "Classic Red Sungudi Cotton Saree.",
     fabric: "Pure Sungudi Cotton",
     blouse: "Unstitched blouse piece included",
@@ -135,8 +137,8 @@ export const sarees: Saree[] = [
     colour: "White",
     price: 2999,
     originalPrice: 3499,
-    image: "./Product/White%20Ikat%20Mulmul%20Saree.png",
-    views: [{ url: "./Product/White%20Ikat%20Mulmul%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/White%20Ikat%20Mulmul%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/White%20Ikat%20Mulmul%20Saree.png"), label: "Full drape" }],
     blurb: "Ethereal White Ikat Mulmul Cotton Saree.",
     fabric: "Pure Mulmul Cotton",
     blouse: "Unstitched blouse piece included",
@@ -151,8 +153,8 @@ export const sarees: Saree[] = [
     colour: "Yellow & Teal",
     price: 3099,
     originalPrice: 3599,
-    image: "./Product/Yellow%20Teal%20Mulmul%20Cotton%20Saree.png",
-    views: [{ url: "./Product/Yellow%20Teal%20Mulmul%20Cotton%20Saree.png", label: "Full drape" }],
+    image: getPublicUrl("Product/Yellow%20Teal%20Mulmul%20Cotton%20Saree.png"),
+    views: [{ url: getPublicUrl("Product/Yellow%20Teal%20Mulmul%20Cotton%20Saree.png"), label: "Full drape" }],
     blurb: "Elegant Yellow and Teal Mulmul Cotton Saree.",
     fabric: "Pure Mulmul Cotton",
     blouse: "Unstitched blouse piece included",
@@ -181,12 +183,24 @@ export const getSaree = (slug: string): Saree | undefined => {
         if (raw) {
           const stored: Saree[] = JSON.parse(raw);
           const match = stored.find((s) => s.slug === slug);
-          if (match) return match;
+          if (match) {
+            return {
+              ...match,
+              image: getPublicUrl(match.image),
+              views: (match.views || []).map((v) => ({ ...v, url: getPublicUrl(v.url) })),
+            };
+          }
         }
       }
     } catch {}
   }
-  return sarees.find((s) => s.slug === slug);
+  const match = sarees.find((s) => s.slug === slug);
+  if (!match) return undefined;
+  return {
+    ...match,
+    image: getPublicUrl(match.image),
+    views: (match.views || []).map((v) => ({ ...v, url: getPublicUrl(v.url) })),
+  };
 };
 
 export const formatPrice = (paise: number) =>
