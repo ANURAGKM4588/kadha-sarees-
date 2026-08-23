@@ -30,7 +30,7 @@ export function SiteHeader() {
           {/* Brand Logo */}
           <Link to="/" className="flex min-w-0 items-center">
             <img
-              src="/logo/BRAND IDENTITY.png"
+              src="./logo/BRAND IDENTITY.png"
               alt="Kadha Sarees Store"
               width={160}
               height={44}

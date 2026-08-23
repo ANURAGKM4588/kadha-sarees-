@@ -42,7 +42,7 @@ export function HeroSectionOption6() {
       >
         {/* BASE LAYER: CUSTOM BLACK & WHITE HERO IMAGE */}
         <img
-          src="/herosection/Herosection-bw.png"
+          src="./herosection/Herosection-bw.png"
           alt="Kadha Handwoven Sarees Collection"
           width={1920}
           height={1080}
@@ -60,7 +60,7 @@ export function HeroSectionOption6() {
           }}
         >
           <img
-            src="/herosection/Herosection.png"
+            src="./herosection/Herosection.png"
             alt="Kadha Handwoven Sarees Collection (Color Reveal)"
             width={1920}
             height={1080}

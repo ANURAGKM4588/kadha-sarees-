@@ -14,7 +14,7 @@ export function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
             <img
-              src="/logo/BRAND IDENTITY white.png"
+              src="./logo/BRAND IDENTITY white.png"
               alt="Kadha Sarees"
               width={160}
               height={50}

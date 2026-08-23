@@ -30,7 +30,7 @@ function About() {
         <div className="lg:col-span-5 relative">
           <div className="lg:sticky lg:top-24 h-full min-h-[400px] lg:min-h-[680px] rounded-3xl overflow-hidden border border-slate-200 shadow-xl bg-slate-100">
             <img
-              src="/logo/About us.png"
+              src="./logo/About us.png"
               alt="Kadha Studio About Us"
               width={1408}
               height={912}

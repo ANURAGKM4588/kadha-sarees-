@@ -69,7 +69,7 @@ export async function openRazorpayCheckout({
     currency: "INR",
     name: "Kadha Sarees",
     description: "Handwoven Saree Booking Reservation",
-    image: "/logo/Favicon.png",
+    image: "./logo/Favicon.png",
     prefill: {
       name: customerName,
       email: customerEmail,
