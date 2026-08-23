@@ -1,16 +1,16 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export const SUPABASE_URL =
-  import.meta.env.VITE_SUPABASE_URL || "https://oglbbffvqyqrlctkycfs.supabase.co";
+  (import.meta.env["VITE_SUPABASE_URL"] as string) || "https://oglbbffvqyqrlctkycfs.supabase.co";
 
 export const SUPABASE_ANON_KEY =
-  import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+  (import.meta.env["VITE_SUPABASE_ANON_KEY"] as string) || "";
 
 export const isSupabaseConfigured = Boolean(
   SUPABASE_URL &&
     SUPABASE_ANON_KEY &&
     !SUPABASE_ANON_KEY.includes("YOUR_") &&
-    SUPABASE_ANON_KEY.startsWith("eyJ")
+    (SUPABASE_ANON_KEY.startsWith("eyJ") || SUPABASE_ANON_KEY.startsWith("sb_") || SUPABASE_ANON_KEY.length > 20)
 );
 
 export const supabase: SupabaseClient = isSupabaseConfigured

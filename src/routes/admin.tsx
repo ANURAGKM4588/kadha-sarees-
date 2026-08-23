@@ -1964,8 +1964,8 @@ function AddProductModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl border-2 border-gold/40 bg-white text-slate-900 p-6 sm:p-8 shadow-2xl font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm animate-in fade-in">
+      <div className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl border-2 border-gold/40 bg-white text-slate-900 p-4 sm:p-8 shadow-2xl font-sans" style={{ WebkitOverflowScrolling: "touch" }}>
         <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gold/20 text-gold">
@@ -2129,7 +2129,7 @@ function AddProductModal({
             </div>
 
             {/* Stock Status & Pricing */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
                   Stock Status *
@@ -2176,7 +2176,7 @@ function AddProductModal({
             </div>
 
             {/* Weave & Colour */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
                   Weave Type
@@ -2259,6 +2259,48 @@ function AddProductModal({
                 placeholder="e.g. Handcrafted masterpiece woven with rich heritage zari craftsmanship."
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
               />
+            </div>
+
+            {/* Fabric, Blouse & Care Details */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
+                  Fabric Material
+                </label>
+                <input
+                  type="text"
+                  value={fabric}
+                  onChange={(e) => setFabric(e.target.value)}
+                  placeholder="e.g. Pure Mulberry Silk"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
+                  Blouse Specification
+                </label>
+                <input
+                  type="text"
+                  value={blouse}
+                  onChange={(e) => setBlouse(e.target.value)}
+                  placeholder="e.g. Unstitched matching silk"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
+                  Care Instructions
+                </label>
+                <input
+                  type="text"
+                  value={care}
+                  onChange={(e) => setCare(e.target.value)}
+                  placeholder="e.g. Dry clean only"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
+                />
+              </div>
             </div>
 
             {/* Action Bar */}
@@ -2469,8 +2511,8 @@ function EditProductModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
-      <div className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl border-2 border-gold/40 bg-white text-slate-900 p-6 sm:p-8 shadow-2xl font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm animate-in fade-in">
+      <div className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-3xl border-2 border-gold/40 bg-white text-slate-900 p-4 sm:p-8 shadow-2xl font-sans" style={{ WebkitOverflowScrolling: "touch" }}>
         <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gold/20 text-gold">
@@ -2623,7 +2665,7 @@ function EditProductModal({
             </div>
 
             {/* Stock Status & Pricing */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
                   Stock Status *
@@ -2669,7 +2711,7 @@ function EditProductModal({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
                   Weave Type
@@ -2752,6 +2794,48 @@ function EditProductModal({
                 placeholder="e.g. Handcrafted masterpiece woven with rich heritage zari craftsmanship."
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
               />
+            </div>
+
+            {/* Fabric, Blouse & Care Details */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
+                  Fabric Material
+                </label>
+                <input
+                  type="text"
+                  value={fabric}
+                  onChange={(e) => setFabric(e.target.value)}
+                  placeholder="e.g. Pure Mulberry Silk"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
+                  Blouse Specification
+                </label>
+                <input
+                  type="text"
+                  value={blouse}
+                  onChange={(e) => setBlouse(e.target.value)}
+                  placeholder="e.g. Unstitched matching silk"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.18em] text-slate-600 mb-1 font-bold">
+                  Care Instructions
+                </label>
+                <input
+                  type="text"
+                  value={care}
+                  onChange={(e) => setCare(e.target.value)}
+                  placeholder="e.g. Dry clean only"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-gold font-medium"
+                />
+              </div>
             </div>
 
             <div className="pt-3 flex justify-end items-center gap-2 border-t border-slate-100">
