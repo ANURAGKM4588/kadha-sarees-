@@ -36,6 +36,9 @@ export function SiteFooter() {
             <Link to="/booking" className="hover:text-brand transition-colors">
               Book a saree
             </Link>
+            <Link to="/admin" className="hover:text-brand transition-colors text-gold-dark font-medium">
+              Admin Portal
+            </Link>
           </nav>
           <div className="flex flex-col gap-3 text-sm text-muted-foreground">
             <p className="font-display text-lg font-semibold text-brand-soft">Concierge</p>
@@ -53,8 +56,11 @@ export function SiteFooter() {
             <p>Mon–Sat, 10am–7pm IST</p>
           </div>
         </div>
-        <div className="mt-12 border-t border-border/80 pt-6 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-          © {new Date().getFullYear()} Kadha · Handwoven in India
+        <div className="mt-12 border-t border-border/80 pt-6 flex flex-wrap items-center justify-between gap-4 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+          <span>© {new Date().getFullYear()} Kadha · Handwoven in India</span>
+          <Link to="/admin" className="hover:text-brand transition-colors underline underline-offset-4">
+            Store Admin Management
+          </Link>
         </div>
       </div>
     </footer>

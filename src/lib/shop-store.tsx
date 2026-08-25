@@ -20,7 +20,7 @@ export type ExtendedSaree = Saree & {
   publishedAt?: string;
 };
 
-export type OrderStatus = "Pending" | "Processing" | "Completed" | "Cancelled";
+export type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
 
 export type OrderItem = {
   slug: string;
@@ -45,6 +45,9 @@ export type Order = {
   status: OrderStatus;
   paymentId?: string;
   paymentStatus?: "Paid" | "Pending" | "Failed";
+  courierCarrier?: string;
+  trackingNumber?: string;
+  estimatedDelivery?: string;
 };
 
 export type NotifyRequestType = "out_of_stock" | "coming_soon";
@@ -73,6 +76,7 @@ type ShopStoreContextType = {
   incrementCartAdds: (slug: string, qty?: number) => void;
   createOrder: (orderData: Omit<Order, "id" | "date" | "status">) => Order;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
+  updateOrderTracking: (orderId: string, carrier: string, trackingNo: string, estDelivery?: string) => void;
   createNotifyRequest: (reqData: Omit<NotifyRequest, "id" | "date" | "status">) => NotifyRequest;
   updateNotifyStatus: (reqId: string, status: NotifyRequestStatus) => void;
   deleteNotifyRequest: (reqId: string) => void;
@@ -90,7 +94,103 @@ const initialProducts: ExtendedSaree[] = defaultSarees.map((s) => ({
   stockQty: 1,
 }));
 
-const initialOrders: Order[] = [];
+const initialOrders: Order[] = [
+  {
+    id: "ORD-9281",
+    customerName: "Ananya Sharma",
+    email: "ananya.sharma@example.com",
+    phone: "+91 98765 43210",
+    address: "Flat 402, Lotus Heights, Jubilee Hills, Hyderabad 500033",
+    notes: "Please add festive gift wrapping.",
+    items: [
+      {
+        slug: "beige-ikat-mulmul-saree",
+        name: "Beige Ikat Mulmul Saree",
+        qty: 1,
+        price: 3499,
+        image: resolveAssetUrl("Product/Beige Ikat Mulmul Saree.png"),
+        blouseOption: "with",
+      },
+    ],
+    total: 3499,
+    date: "24 Aug 2026, 04:30 PM",
+    status: "Shipped",
+    paymentId: "pay_N8xY291039",
+    paymentStatus: "Paid",
+    courierCarrier: "BlueDart",
+    trackingNumber: "BD982301924IN",
+    estimatedDelivery: "27 Aug 2026",
+  },
+  {
+    id: "ORD-8419",
+    customerName: "Meera Venkatesh",
+    email: "meera.v@example.com",
+    phone: "+91 94451 88231",
+    address: "12/A, Boat Club Road, R.A. Puram, Chennai 600028",
+    items: [
+      {
+        slug: "mustard-jamdani-weave-saree",
+        name: "Mustard Jamdani Weave Saree",
+        qty: 1,
+        price: 4299,
+        image: resolveAssetUrl("Product/Mustard Jamdani Weave Saree.png"),
+        blouseOption: "with",
+      },
+    ],
+    total: 4299,
+    date: "25 Aug 2026, 11:15 AM",
+    status: "Processing",
+    paymentId: "pay_N9aK441829",
+    paymentStatus: "Paid",
+  },
+  {
+    id: "ORD-7392",
+    customerName: "Pooja Banerjee",
+    email: "pooja.b@example.com",
+    phone: "+91 98302 11984",
+    address: "Block B-504, South City Phase I, Gurgaon 122001",
+    items: [
+      {
+        slug: "powder-blue-tussar-silk-saree",
+        name: "Powder Blue Tussar Silk Saree",
+        qty: 1,
+        price: 4999,
+        image: resolveAssetUrl("Product/Powder Blue Tussar Silk Saree.png"),
+        blouseOption: "without",
+      },
+    ],
+    total: 4699,
+    date: "22 Aug 2026, 02:45 PM",
+    status: "Delivered",
+    paymentId: "pay_M7qZ889102",
+    paymentStatus: "Paid",
+    courierCarrier: "Delhivery",
+    trackingNumber: "DLH778192004",
+    estimatedDelivery: "24 Aug 2026",
+  },
+  {
+    id: "ORD-6120",
+    customerName: "Radhika Kulkarni",
+    email: "radhika.k@example.com",
+    phone: "+91 97690 55432",
+    address: "Plot 88, Prabhat Road, Lane 14, Pune 411004",
+    items: [
+      {
+        slug: "rust-orange-organza-saree",
+        name: "Rust Orange Organza Saree",
+        qty: 1,
+        price: 3899,
+        image: resolveAssetUrl("Product/Rust Orange Organza Saree.png"),
+        blouseOption: "with",
+      },
+    ],
+    total: 3899,
+    date: "25 Aug 2026, 12:40 PM",
+    status: "Pending",
+    paymentId: "pay_N9bM772910",
+    paymentStatus: "Pending",
+  },
+];
 
 const initialNotifyRequests: NotifyRequest[] = [];
 
@@ -520,6 +620,35 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const updateOrderTracking = useCallback(
+    (orderId: string, courierCarrier: string, trackingNumber: string, estimatedDelivery?: string) => {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === orderId
+            ? {
+                ...o,
+                courierCarrier: courierCarrier || o.courierCarrier,
+                trackingNumber: trackingNumber || o.trackingNumber,
+                estimatedDelivery: estimatedDelivery || o.estimatedDelivery,
+              }
+            : o
+        )
+      );
+      if (isSupabaseConfigured) {
+        supabase
+          .from("orders")
+          .update({
+            courier_carrier: courierCarrier,
+            tracking_number: trackingNumber,
+            estimated_delivery: estimatedDelivery,
+          })
+          .eq("id", orderId)
+          .then();
+      }
+    },
+    []
+  );
+
   const createNotifyRequest = useCallback(
     (reqData: Omit<NotifyRequest, "id" | "date" | "status">): NotifyRequest => {
       const newReq: NotifyRequest = {
@@ -586,6 +715,7 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
       incrementCartAdds,
       createOrder,
       updateOrderStatus,
+      updateOrderTracking,
       createNotifyRequest,
       updateNotifyStatus,
       deleteNotifyRequest,
@@ -603,6 +733,7 @@ export function ShopStoreProvider({ children }: { children: ReactNode }) {
       incrementCartAdds,
       createOrder,
       updateOrderStatus,
+      updateOrderTracking,
       createNotifyRequest,
       updateNotifyStatus,
       deleteNotifyRequest,
