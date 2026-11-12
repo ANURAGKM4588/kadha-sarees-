@@ -57,11 +57,20 @@
         </div>
         <div class="hero-bottomline">
           <div class="hero-bottom-quote"><span>“</span><p><strong>Made with meaning</strong><br>Handwoven in India, loved everywhere.</p><a href="#story">The KADHA story <span><svg class="vector-ico ico-arrow-up-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></a></div>
-          <div class="hero-bottom-index"><div><b>01</b><span>Handloom stories</span><a href="#collections" aria-label="Explore the collection"><svg class="vector-ico ico-arrow-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div><strong>Rooted in craft, made for now.</strong></div>
+          <div class="hero-bottom-index"><div><b>01</b><span>Handloom stories</span><a href="#shop" aria-label="Explore the sarees"><svg class="vector-ico ico-arrow-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div><strong>Rooted in craft, made for now.</strong></div>
         </div>
       </div>
     </section>
 
+    <!-- 1. CORE COMMERCE SHOWCASE: Immediately beneath hero for high-converting discovery -->
+    <section class="section product-section" id="shop">
+      <div class="section-heading product-heading"><div><span class="eyebrow">Considered, never hurried</span><h2>Pieces to <em>keep close.</em></h2></div><p>Handwoven in small batches.<br>Made to become part of your story.</p></div>
+      <div class="filter-row" id="filterRow"><button class="filter-chip active" data-filter="All">All sarees <span>11</span></button><button class="filter-chip" data-filter="Mulmul">Mulmul cotton</button><button class="filter-chip" data-filter="Narayani">Narayani pattu</button><button class="filter-chip" data-filter="Sungudi">Sungudi cotton</button><div class="sort-wrap"><label for="sortSelect">Sort by</label><select id="sortSelect"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></div></div>
+      <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      <div class="catalogue-cta"><span>Each piece is a little different. That’s the beauty of the handloom.</span><a class="btn btn-outline" href="#collections">Explore by category <span><svg class="vector-ico ico-arrow-up-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></a></div>
+    </section>
+
+    <!-- 2. VISUAL TAXONOMY & OCCASION BROWSING -->
     <section class="section section-categories" id="collections">
       <div class="section-heading"><div><span class="eyebrow">Find your kind of drape</span><h2>Made for every <em>moment.</em></h2></div><a class="text-link" href="#shop">View all sarees <span><svg class="vector-ico ico-arrow-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div>
       <div class="category-grid">
@@ -71,16 +80,10 @@
       </div>
     </section>
 
+    <!-- 3. BRAND ETHOS & STORYTELLING -->
     <section class="story-band" id="story">
       <div class="story-image"><img src="assets/Herosection.png" alt="Hands working carefully at a handloom"><span class="image-caption">A rhythm passed hand to hand.</span></div>
       <div class="story-copy"><span class="eyebrow">The KADHA way</span><h2>Some things are<br>worth <em>taking time for.</em></h2><p>We believe a saree carries more than a pattern. It holds the patience of a weaver, the character of a place, and the stories you’ll make in it.</p><p>So we work closely with artisan communities to bring you honest materials, considered details, and pieces you’ll reach for again and again.</p><a class="btn btn-outline" href="#craft">Get to know our craft <span><svg class="vector-ico ico-arrow-up-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></a><div class="story-signature">The Story Begins Here <span>— KADHA</span></div></div>
-    </section>
-
-    <section class="section product-section" id="shop">
-      <div class="section-heading product-heading"><div><span class="eyebrow">Considered, never hurried</span><h2>Pieces to <em>keep close.</em></h2></div><p>Handwoven in small batches.<br>Made to become part of your story.</p></div>
-      <div class="filter-row" id="filterRow"><button class="filter-chip active" data-filter="All">All sarees <span>11</span></button><button class="filter-chip" data-filter="Mulmul">Mulmul cotton</button><button class="filter-chip" data-filter="Narayani">Narayani pattu</button><button class="filter-chip" data-filter="Sungudi">Sungudi cotton</button><div class="sort-wrap"><label for="sortSelect">Sort by</label><select id="sortSelect"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></div></div>
-      <div class="product-grid" id="productGrid" aria-live="polite"></div>
-      <div class="catalogue-cta"><span>Each piece is a little different. That’s the beauty of the handloom.</span><a class="btn btn-outline" href="#new-arrivals">See the full collection <span><svg class="vector-ico ico-arrow-up-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></a></div>
     </section>
 
     <section class="craft-section" id="craft">

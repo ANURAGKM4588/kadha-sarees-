@@ -2166,7 +2166,31 @@ body.dark .hero-title {
   padding-top: 10px !important;
 }
 
+/* Strategic spacing when Product Section sits directly below the Hero Section */
+.product-section {
+  padding-top: 64px !important;
+  padding-bottom: 72px !important;
+}
+
+.product-heading {
+  margin-bottom: 22px !important;
+}
+
+.section-categories {
+  padding-top: 56px !important;
+  padding-bottom: 64px !important;
+  border-top: 1px solid var(--border);
+}
+
 @media (max-width: 720px) {
+  .product-section {
+    padding-top: 40px !important;
+    padding-bottom: 48px !important;
+  }
+  .section-categories {
+    padding-top: 40px !important;
+    padding-bottom: 48px !important;
+  }
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 12px 10px !important;
