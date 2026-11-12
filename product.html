@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f1">
+  <meta name="description" content="KADHA Handloom Saree Details — pure handwoven silk and organic cotton shaped by master artisan weavers.">
+  <title>Handloom Saree — KADHA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="announcement"><span>Complimentary shipping on orders above ₹5,000</span><a href="collections.html">Explore the new season <span aria-hidden="true"><svg class="vector-ico ico-arrow-up-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></a></div>
+  
+  <div class="mobile-nav" id="mobileNav">
+    <button class="icon-btn close-mobile" id="menuClose" aria-label="Close menu">×</button>
+    <a href="collections.html">Collections</a>
+    <a href="story.html">Our story</a>
+    <a href="craft.html">The craft</a>
+    <a href="journal.html">Journal</a>
+    <a href="account.html">My Account</a>
+    <a href="contact.html">Contact & Care</a>
+  </div>
+
+  <header class="site-header" id="top">
+    <button class="icon-btn mobile-menu" aria-label="Open menu" id="menuOpen"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="brand-mark" href="index.html" aria-label="KADHA home"><img src="assets/BRAND IDENTITY.png" alt="KADHA"></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="collections.html">Collections</a>
+      <a href="story.html">Our story</a>
+      <a href="craft.html">The craft</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="searchOpen" aria-label="Search sarees"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg></button>
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to dark theme"><svg viewBox="0 0 24 24"><path d="M20.2 15.2A8.6 8.6 0 0 1 8.8 3.8 8.7 8.7 0 1 0 20.2 15.2Z"/></svg></button>
+      <button class="icon-btn cart-trigger" id="cartOpen" aria-label="Open shopping bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg><span class="cart-count" id="cartCount">0</span></button>
+      <a class="account-pill account-link" href="account.html" aria-label="Your account">Sign in</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- PDP SECTION -->
+    <section class="pdp-section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumb-trail pdp-breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="collections.html">Collections</a>
+        <span>/</span>
+        <span id="pdpBreadcrumbCategory">Handloom</span>
+        <span>/</span>
+        <span id="pdpBreadcrumbTitle" style="color:var(--deep);font-weight:600">Saree</span>
+      </nav>
+
+      <!-- Main Product Grid -->
+      <div class="pdp-grid">
+        <!-- Left: Image Gallery & Previews -->
+        <div class="pdp-gallery-wrap">
+          <div class="pdp-main-media" id="pdpMainMedia">
+            <span class="pdp-badge-tag" id="pdpBadgeTag">-15% OFF</span>
+            <span class="pdp-badge-handloom" id="pdpBadgeHandloom">100% HANDLOOM</span>
+            <img id="pdpMainImg" src="" alt="Handloom Saree">
+          </div>
+          <div class="pdp-thumbnails" id="pdpThumbnails">
+            <!-- Dynamically generated thumbnails -->
+          </div>
+        </div>
+
+        <!-- Right: Story, Specs, Price & Purchase -->
+        <div class="pdp-info">
+          <div class="pdp-cluster-tag" id="pdpClusterTag">KANCHIPURAM HERITAGE CLUSTER</div>
+          <h1 class="pdp-title" id="pdpTitle">Handloom Saree</h1>
+
+          <div class="pdp-price-row">
+            <span class="pdp-price-now" id="pdpPriceNow">₹0</span>
+            <span class="pdp-price-was" id="pdpPriceWas">₹0</span>
+            <span class="pdp-discount-pill" id="pdpDiscountPill">Save ₹0</span>
+          </div>
+          <div class="pdp-tax-note">Inclusive of all taxes · Complimentary insured delivery across India</div>
+
+          <p class="pdp-desc" id="pdpDesc">
+            Carefully crafted in small batches by master weavers on traditional pit looms.
+          </p>
+
+          <!-- Weave & Artisan Specs -->
+          <div class="pdp-specs-grid">
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label">Fabric / Weave</span>
+              <span class="pdp-spec-val" id="pdpSpecFabric">—</span>
+            </div>
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label">Artisan Cluster</span>
+              <span class="pdp-spec-val" id="pdpSpecCluster">—</span>
+            </div>
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label">Craft Duration</span>
+              <span class="pdp-spec-val" id="pdpSpecHours">—</span>
+            </div>
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label">Dimensions</span>
+              <span class="pdp-spec-val">5.5m + 0.8m Blouse Piece</span>
+            </div>
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label">Hand-feel</span>
+              <span class="pdp-spec-val" id="pdpSpecFeel">—</span>
+            </div>
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label">Authentication</span>
+              <span class="pdp-spec-val">Certified Silk / Handloom Tag</span>
+            </div>
+          </div>
+
+          <!-- Purchase Controls -->
+          <div class="pdp-actions-row">
+            <div class="pdp-qty-wrap" aria-label="Quantity">
+              <button class="pdp-qty-btn" id="pdpQtyDec" aria-label="Decrease quantity">−</button>
+              <span class="pdp-qty-val" id="pdpQtyVal">1</span>
+              <button class="pdp-qty-btn" id="pdpQtyInc" aria-label="Increase quantity">+</button>
+            </div>
+            <button class="pdp-add-btn" id="pdpAddBtn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16l-1.2 12H5.2L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+              <span>Add to Shopping Bag</span>
+            </button>
+            <button class="pdp-wish-btn" id="pdpWishBtn" aria-label="Save to Wishlist">
+              <svg class="vector-ico ico-heart outline" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+          </div>
+
+          <!-- Drape Booking Secondary Action -->
+          <div class="pdp-secondary-actions">
+            <button class="pdp-book-btn" id="pdpBookBtn">
+              <svg class="vector-ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Book a Free Drape Consultation for This Saree</span>
+            </button>
+          </div>
+
+          <!-- Reassurance Perks -->
+          <div class="pdp-perks-bar">
+            <div class="pdp-perk-item">
+              <span class="pdp-perk-icon">⚡</span>
+              <span>Dispatched within 24–48 hours with door-to-door insured tracking</span>
+            </div>
+            <div class="pdp-perk-item">
+              <span class="pdp-perk-icon">🌿</span>
+              <span>100% Genuine Handloom woven by master artisan families</span>
+            </div>
+            <div class="pdp-perk-item">
+              <span class="pdp-perk-icon">🔄</span>
+              <span>7-Day Hassle-Free Exchange & Drape Guarantee</span>
+            </div>
+          </div>
+
+          <!-- Collapsible Accordions -->
+          <div class="pdp-accordions">
+            <div class="pdp-accordion-item active">
+              <button class="pdp-accordion-header">
+                <span>The Story of This Weave</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="pdp-accordion-content" id="pdpAccordionStory">
+                Every motif and thread in this piece has been woven with deliberate care. Handloom weaving creates gentle variations in texture that make your saree uniquely one-of-a-kind.
+              </div>
+            </div>
+
+            <div class="pdp-accordion-item">
+              <button class="pdp-accordion-header">
+                <span>Draping & Styling Advice</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="pdp-accordion-content">
+                Pair this saree with a contrast silk or raw cotton blouse. The natural drape holds structured pleats effortlessly. Ideal for festive gatherings, intimate ceremonies, or thoughtful everyday wear.
+              </div>
+            </div>
+
+            <div class="pdp-accordion-item">
+              <button class="pdp-accordion-header">
+                <span>Care & Preservation Guide</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="pdp-accordion-content">
+                Dry clean recommended for silks. For organic cottons, gentle hand wash in cold water with mild detergent. Store wrapped in a breathable muslin cloth away from direct sunlight.
+              </div>
+            </div>
+
+            <div class="pdp-accordion-item">
+              <button class="pdp-accordion-header">
+                <span>Complimentary Delivery & Returns</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="pdp-accordion-content">
+                Complimentary insured delivery across all Indian pin codes. Delivered in our signature reusable KADHA cotton keepsake box. 7-day seamless return/exchange service.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED HANDLOOM SAREES -->
+    <section class="section product-section" style="padding-top:40px;border-top:1px solid var(--border)">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Handloom Edit</span>
+          <h2>You May Also <em>Cherish.</em></h2>
+        </div>
+        <a class="text-link" href="collections.html">View all sarees <span><svg class="vector-ico ico-arrow-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+      </div>
+      <div class="product-grid" id="relatedGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ETHOS STRIP -->
+    <section class="story-band" style="min-height:360px">
+      <div class="story-image" style="min-height:360px">
+        <img src="assets/Herosection.png" alt="Handloom artisan at work">
+        <span class="image-caption">Every pass of the shuttle holds a legacy.</span>
+      </div>
+      <div class="story-copy" style="padding:60px 50px">
+        <span class="eyebrow">Fair Trade & Craft Preservation</span>
+        <h2 style="font-size:clamp(28px, 3.2vw, 38px);margin:12px 0 16px">Woven with <em>dignity.</em></h2>
+        <p>We work directly with weaver cooperatives, ensuring fair wages, respectful timelines, and the preservation of age-old pit loom traditions.</p>
+        <a class="btn btn-outline" href="story.html">Read our story <span>→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a href="index.html"><img src="assets/BRAND IDENTITY white.png" alt="KADHA — The Story Begins Here"></a>
+        <p>Thoughtful handloom sarees.<br>Made slowly, worn your way.</p>
+        <div class="social-links">
+          <a href="journal.html" aria-label="Instagram">ig</a>
+          <a href="journal.html" aria-label="Pinterest">p</a>
+          <a href="journal.html" aria-label="Facebook">f</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <b>Explore</b>
+        <a href="collections.html">Collections</a>
+        <a href="collections.html#shop">All sarees</a>
+        <a href="story.html">Our story</a>
+        <a href="craft.html">The craft</a>
+      </div>
+      <div class="footer-col">
+        <b>We're here</b>
+        <a href="contact.html">Contact us</a>
+        <a href="contact.html#shipping">Shipping & returns</a>
+        <a href="contact.html#care">Care guide</a>
+        <a href="admin.html">Admin dashboard</a>
+      </div>
+      <div class="footer-contact">
+        <span>Need help choosing?</span>
+        <strong>Let’s find your drape.</strong>
+        <button class="footer-book" data-book="A personal drape consultation">Book a drape consultation <svg class="vector-ico ico-arrow-up-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>
+        <small>Mon–Sat, 10am–6pm IST</small>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 KADHA. The story begins here.</span>
+      <span>Made thoughtfully, in India.</span>
+      <div>
+        <a href="contact.html#privacy">Privacy</a>
+        <a href="contact.html#terms">Terms</a>
+        <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top <svg class="vector-ico ico-arrow-up" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER & MODALS -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <span class="eyebrow">Your edit</span>
+        <h3>Your bag <span id="bagTitleCount">(0)</span></h3>
+      </div>
+      <button class="icon-btn drawer-close" id="cartClose" aria-label="Close bag">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-empty" id="cartEmpty">
+      <span><svg class="vector-ico ico-sparkle" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2a1.2 1.2 0 0 1 1.2 1.2v3.83l2.71-2.71a1.2 1.2 0 1 1 1.7 1.7L14.9 8.73h3.84a1.2 1.2 0 1 1 0 2.4h-3.84l2.71 2.71a1.2 1.2 0 1 1-1.7 1.7L13.2 12.83v3.84a1.2 1.2 0 1 1-2.4 0v-3.84l-2.71 2.71a1.2 1.2 0 0 1-1.7-1.7l2.71-2.71H5.26a1.2 1.2 0 0 1 0-2.4h3.84L6.39 6.02a1.2 1.2 0 1 1 1.7-1.7l2.71 2.71V3.2A1.2 1.2 0 0 1 12 2z"/></svg></span>
+      <b>Your bag is waiting for a story.</b>
+      <p>Find a piece that feels like you.</p>
+      <button class="btn btn-primary" id="continueShopping">Explore sarees</button>
+    </div>
+    <div class="cart-bottom" id="cartBottom">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">₹0</strong>
+      </div>
+      <small>Shipping and taxes calculated at checkout.</small>
+      <button class="btn btn-primary checkout-btn" id="checkoutBtn">Continue to checkout <span><svg class="vector-ico ico-arrow-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></button>
+      <div class="checkout-message" id="checkoutMessage"></div>
+    </div>
+  </aside>
+
+  <!-- SEARCH PANEL -->
+  <section class="search-panel" id="searchPanel" aria-hidden="true">
+    <div class="search-panel-head">
+      <a class="brand-mark" href="#top"><img src="assets/BRAND IDENTITY.png" alt="KADHA"></a>
+      <button class="icon-btn" id="searchClose" aria-label="Close search">×</button>
+    </div>
+    <div class="search-inner">
+      <span class="eyebrow">Find your next favourite</span>
+      <label for="searchInput" class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg>
+        <input id="searchInput" placeholder="Search sarees, colours, fabrics…" autocomplete="off">
+        <kbd>ESC</kbd>
+      </label>
+      <div class="search-results" id="searchResults"><span class="search-hint">Popular: Mulmul · Narayani · Sungudi</span></div>
+    </div>
+  </section>
+
+  <!-- BOOKING MODAL -->
+  <div class="modal booking-modal" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+    <button class="modal-close" data-close aria-label="Close">×</button>
+    <div class="booking-content">
+      <div class="booking-visual">
+        <img id="bookingModalImg" src="assets/Beige Ikat Mulmul Saree.png" alt="A KADHA handloom saree">
+        <span>PERSONAL DRAPE CONSULTATION</span>
+      </div>
+      <div class="booking-form-wrap">
+        <span class="eyebrow">A little help, if you’d like it</span>
+        <h2 id="bookingTitle">Let’s find your <em>drape.</em></h2>
+        <p>Book a relaxed, one-to-one consultation with our styling team.</p>
+        <form id="bookingForm">
+          <label>Your name<input name="name" required placeholder="Name"></label>
+          <label>Email address<input name="email" type="email" required placeholder="you@example.com"></label>
+          <label>What are you looking for?
+            <select name="interest">
+              <option>Help choosing a saree</option>
+              <option>Drape styling session</option>
+              <option>Occasion styling</option>
+            </select>
+          </label>
+          <label>Preferred time
+            <select name="time">
+              <option>Morning · 10am–1pm</option>
+              <option>Afternoon · 1pm–4pm</option>
+              <option>Evening · 4pm–6pm</option>
+            </select>
+          </label>
+          <button class="btn btn-primary" type="submit">Request a time <span><svg class="vector-ico ico-arrow-right" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></button>
+          <div class="booking-success" id="bookingSuccess" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- SCRIPTS -->
+  <script src="app.js"></script>
+  <script>
+    // Product Details Page Dynamic Initialization
+    (function initPDP() {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id') || 'maroon-narayani';
+      
+      // Lookup product from global catalog
+      const product = products.find(p => p.id === productId) || products[0];
+      if (!product) return;
+
+      // Update page title
+      document.title = `${product.name} — Handloom Saree | KADHA`;
+
+      // Update Breadcrumbs
+      const bcCat = document.getElementById('pdpBreadcrumbCategory');
+      const bcTitle = document.getElementById('pdpBreadcrumbTitle');
+      if (bcCat) bcCat.textContent = product.fabric;
+      if (bcTitle) bcTitle.textContent = product.name;
+
+      // Update Imagery & Badges
+      const mainImg = document.getElementById('pdpMainImg');
+      if (mainImg) {
+        mainImg.src = `assets/${product.img}`;
+        mainImg.alt = product.name;
+      }
+      const badgeTag = document.getElementById('pdpBadgeTag');
+      if (badgeTag) badgeTag.textContent = `-${product.discount}% OFF`;
+      
+      const badgeHandloom = document.getElementById('pdpBadgeHandloom');
+      if (badgeHandloom) {
+        badgeHandloom.textContent = product.badge.toUpperCase();
+      }
+
+      // Populate Thumbnails
+      const thumbsContainer = document.getElementById('pdpThumbnails');
+      if (thumbsContainer) {
+        // Multi-angle simulation
+        const thumbImages = [
+          `assets/${product.img}`,
+          'assets/Herosection.png',
+          `assets/${product.img}`
+        ];
+        thumbsContainer.innerHTML = thumbImages.map((src, idx) => `
+          <button class="pdp-thumb ${idx === 0 ? 'active' : ''}" data-thumb="${src}" aria-label="View angle ${idx + 1}">
+            <img src="${src}" alt="${product.name} view">
+          </button>
+        `).join('');
+
+        thumbsContainer.querySelectorAll('.pdp-thumb').forEach(btn => {
+          btn.addEventListener('click', () => {
+            thumbsContainer.querySelectorAll('.pdp-thumb').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (mainImg) mainImg.src = btn.getAttribute('data-thumb');
+          });
+        });
+      }
+
+      // Cluster & Title
+      const clusterTag = document.getElementById('pdpClusterTag');
+      const clusterMap = {
+        'Narayani': 'KANCHIPURAM HERITAGE CLUSTER · TAMIL NADU',
+        'Sungudi': 'MADURAI ARTISAN CRAFT GUILD · TAMIL NADU',
+        'Mulmul': 'CHIRALA & VENKATAGIRI GUILD · ANDHRA PRADESH'
+      };
+      if (clusterTag) clusterTag.textContent = clusterMap[product.category] || 'HERITAGE WEAVING CLUSTER';
+
+      const titleEl = document.getElementById('pdpTitle');
+      if (titleEl) titleEl.textContent = product.name;
+
+      // Pricing
+      const priceNow = document.getElementById('pdpPriceNow');
+      const priceWas = document.getElementById('pdpPriceWas');
+      const discountPill = document.getElementById('pdpDiscountPill');
+      if (priceNow) priceNow.textContent = `₹${product.price.toLocaleString('en-IN')}`;
+      if (priceWas) priceWas.textContent = `₹${product.was.toLocaleString('en-IN')}`;
+      if (discountPill) discountPill.textContent = `Save ₹${(product.was - product.price).toLocaleString('en-IN')}`;
+
+      // Narrative
+      const descEl = document.getElementById('pdpDesc');
+      if (descEl) descEl.textContent = `${product.description} Handwoven with organic, skin-kind threads over decades of generational master weaver knowledge. Designed for effortless grace and contemporary living.`;
+
+      // Specs
+      const hoursMap = {
+        'Narayani': '110+ Loom Hours',
+        'Sungudi': '65+ Loom & Dye Hours',
+        'Mulmul': '72+ Loom Hours'
+      };
+      const feelMap = {
+        'Narayani': 'Rich, structured, heirloom drape',
+        'Sungudi': 'Crisp, joyful, breathable hold',
+        'Mulmul': 'Featherlight, buttery soft, all-day ease'
+      };
+      const specFabric = document.getElementById('pdpSpecFabric');
+      const specCluster = document.getElementById('pdpSpecCluster');
+      const specHours = document.getElementById('pdpSpecHours');
+      const specFeel = document.getElementById('pdpSpecFeel');
+      if (specFabric) specFabric.textContent = product.fabric;
+      if (specCluster) specCluster.textContent = clusterMap[product.category] || 'South India Handloom';
+      if (specHours) specHours.textContent = hoursMap[product.category] || '80+ Loom Hours';
+      if (specFeel) specFeel.textContent = feelMap[product.category] || 'Soft & Breathable';
+
+      // Quantity Logic
+      let quantity = 1;
+      const qtyVal = document.getElementById('pdpQtyVal');
+      const qtyDec = document.getElementById('pdpQtyDec');
+      const qtyInc = document.getElementById('pdpQtyInc');
+      if (qtyDec && qtyInc && qtyVal) {
+        qtyDec.addEventListener('click', () => {
+          if (quantity > 1) {
+            quantity--;
+            qtyVal.textContent = quantity;
+          }
+        });
+        qtyInc.addEventListener('click', () => {
+          if (quantity < 5) {
+            quantity++;
+            qtyVal.textContent = quantity;
+          }
+        });
+      }
+
+      // Add To Bag Action
+      const addBtn = document.getElementById('pdpAddBtn');
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          for (let i = 0; i < quantity; i++) {
+            addToCart(product.id);
+          }
+          openCart();
+          toast(`Added ${quantity} × ${product.name} to your bag`);
+        });
+      }
+
+      // Wishlist Button
+      const wishBtn = document.getElementById('pdpWishBtn');
+      if (wishBtn) {
+        const updateWishState = () => {
+          const isSaved = wishlist.includes(product.id);
+          wishBtn.classList.toggle('saved', isSaved);
+          wishBtn.innerHTML = isSaved
+            ? '<svg class="vector-ico ico-heart filled" viewBox="0 0 24 24" width="18" height="18" fill="#b74347" stroke="#b74347" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
+            : '<svg class="vector-ico ico-heart outline" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+        };
+        updateWishState();
+
+        wishBtn.addEventListener('click', () => {
+          if (wishlist.includes(product.id)) {
+            wishlist = wishlist.filter(x => x !== product.id);
+            toast('Removed from your wishlist');
+          } else {
+            wishlist.push(product.id);
+            toast('Saved to your wishlist');
+          }
+          localStorage.setItem('kadha-wishlist', JSON.stringify(wishlist));
+          updateWishState();
+        });
+      }
+
+      // Book Drape Button
+      const bookBtn = document.getElementById('pdpBookBtn');
+      if (bookBtn) {
+        bookBtn.addEventListener('click', () => {
+          const bookingModalImg = document.getElementById('bookingModalImg');
+          if (bookingModalImg) bookingModalImg.src = `assets/${product.img}`;
+          bookDrape(product.name);
+        });
+      }
+
+      // Accordions
+      document.querySelectorAll('.pdp-accordion-header').forEach(hdr => {
+        hdr.addEventListener('click', () => {
+          const item = hdr.closest('.pdp-accordion-item');
+          if (item) item.classList.toggle('active');
+        });
+      });
+
+      // Related Products
+      const relatedGrid = document.getElementById('relatedGrid');
+      if (relatedGrid) {
+        const related = products.filter(p => p.id !== product.id).slice(0, 4);
+        relatedGrid.innerHTML = related.map(p => productCard(p)).join('');
+      }
+    })();
+  </script>
+</body>
+</html>
+

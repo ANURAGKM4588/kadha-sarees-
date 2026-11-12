@@ -35,7 +35,27 @@ let wishlist=JSON.parse(localStorage.getItem('kadha-wishlist')||'[]');
 let activeProduct=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
-function productCard(p){return `<article class="product-card" data-id="${p.id}"><div class="product-media"><img loading="lazy" src="${asset(p.img)}" alt="${p.name}"/><div class="badge-stack"><span class="badge badge-sale">-${p.discount}% OFF</span></div><button class="wish-btn ${wishlist.includes(p.id)?'saved':''}" data-wish="${p.id}" aria-label="${wishlist.includes(p.id)?'Remove from':'Add to'} wishlist">${wishlist.includes(p.id) ? '<svg class="vector-ico ico-heart filled" viewBox="0 0 24 24" width="16" height="16" fill="#b74347" stroke="#b74347" stroke-width="1.5" style="vertical-align:-2px;" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' : '<svg class="vector-ico ico-heart outline" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px;" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'}</button><button class="quick-view" data-quick="${p.id}"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg> View more</button></div><div class="product-info"><div class="product-meta"><span>${p.fabric}</span></div><h3>${p.name}</h3><div class="price-row"><span class="price-now">${money(p.price)}</span><span class="price-was">${money(p.was)}</span></div><div class="card-actions"><button class="add-btn" data-add="${p.id}"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 12H5.2L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg> Add</button><button class="book-btn" data-book="${p.name}">Book</button></div></div></article>`}
+function productCard(p){
+  return `<article class="product-card" data-id="${p.id}">
+    <div class="product-media">
+      <a href="product.html?id=${p.id}" class="product-img-link" aria-label="View details for ${p.name}">
+        <img loading="lazy" src="${asset(p.img)}" alt="${p.name}"/>
+      </a>
+      <div class="badge-stack"><span class="badge badge-sale">-${p.discount}% OFF</span></div>
+      <button class="wish-btn ${wishlist.includes(p.id)?'saved':''}" data-wish="${p.id}" aria-label="${wishlist.includes(p.id)?'Remove from':'Add to'} wishlist">${wishlist.includes(p.id) ? '<svg class="vector-ico ico-heart filled" viewBox="0 0 24 24" width="16" height="16" fill="#b74347" stroke="#b74347" stroke-width="1.5" style="vertical-align:-2px;" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' : '<svg class="vector-ico ico-heart outline" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px;" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'}</button>
+      <a class="quick-view" href="product.html?id=${p.id}"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg> View more</a>
+    </div>
+    <div class="product-info">
+      <div class="product-meta"><span>${p.fabric}</span></div>
+      <h3><a href="product.html?id=${p.id}">${p.name}</a></h3>
+      <div class="price-row"><span class="price-now">${money(p.price)}</span><span class="price-was">${money(p.was)}</span></div>
+      <div class="card-actions">
+        <button class="add-btn" data-add="${p.id}"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 12H5.2L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg> Add</button>
+        <button class="book-btn" data-book="${p.name}">Book</button>
+      </div>
+    </div>
+  </article>`;
+}
 function renderProducts(){
   const grid = $('#productGrid');
   if(!grid) return;
@@ -68,7 +88,7 @@ function quickView(id){const p=products.find(x=>x.id===id);if(!p)return;activePr
 function bookDrape(productName='A personal drape consultation'){activeProduct=products.find(p=>p.name===productName)||null;const select=$('#bookingForm select[name="interest"]');if(select){if(activeProduct){select.value='Help choosing a saree'}else{select.selectedIndex=0}}const bs=$('#bookingSuccess');if(bs)bs.textContent='';openModal($('#bookingModal'))}
 let toastTimer;function toast(message){const t=$('#toast');if(!t)return;t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400)}
 
-$('#productGrid')?.addEventListener('click',e=>{const add=e.target.closest('[data-add]'),quick=e.target.closest('[data-quick]'),wish=e.target.closest('[data-wish]'),book=e.target.closest('[data-book]');if(add)addToCart(add.dataset.add);if(quick)quickView(quick.dataset.quick);if(wish){const id=wish.dataset.wish;wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];localStorage.setItem('kadha-wishlist',JSON.stringify(wishlist));renderProducts();toast(wishlist.includes(id)?'Saved to your wishlist':'Removed from your wishlist')}if(book)bookDrape(book.dataset.book)});
+$('#productGrid')?.addEventListener('click',e=>{const add=e.target.closest('[data-add]'),quick=e.target.closest('[data-quick]'),wish=e.target.closest('[data-wish]'),book=e.target.closest('[data-book]');if(add)addToCart(add.dataset.add);if(wish){const id=wish.dataset.wish;wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];localStorage.setItem('kadha-wishlist',JSON.stringify(wishlist));renderProducts();toast(wishlist.includes(id)?'Saved to your wishlist':'Removed from your wishlist')}if(book)bookDrape(book.dataset.book)});
 $('#quickContent')?.addEventListener('click',e=>{const add=e.target.closest('[data-quick-add]'),book=e.target.closest('[data-book]');if(add){addToCart(add.dataset.quickAdd);closeModals()}if(book)bookDrape(book.dataset.book)});
 $('#cartItems')?.addEventListener('click',e=>{const qty=e.target.closest('[data-qty]'),remove=e.target.closest('[data-remove]');if(qty){const id=qty.dataset.qty;const item=cart.find(x=>x.id===id);if(item){item.qty+=Number(qty.dataset.delta);if(item.qty<1)cart=cart.filter(x=>x.id!==id);saveCart()}}if(remove){cart=cart.filter(x=>x.id!==remove.dataset.remove);saveCart()}});
 $('#cartOpen')?.addEventListener('click',openCart);$('#cartClose')?.addEventListener('click',closeCart);$('#overlay')?.addEventListener('click',()=>{closeCart();closeSearch();closeModals();$('#mobileNav')?.classList.remove('open')});$('#searchOpen')?.addEventListener('click',openSearch);$('#searchClose')?.addEventListener('click',closeSearch);$('#continueShopping')?.addEventListener('click',()=>{closeCart();const shop=document.querySelector('#shop') || document.querySelector('#catalogue');if(shop)shop.scrollIntoView({behavior:'smooth'});else window.location.href='collections.html';});$$('[data-close]').forEach(b=>b.addEventListener('click',closeModals));
@@ -116,7 +136,7 @@ $('#themeToggle')?.addEventListener('click',()=>{document.body.classList.toggle(
 $('#filterRow')?.addEventListener('click',e=>{const chip=e.target.closest('[data-filter]');if(!chip)return;currentFilter=chip.dataset.filter;$$('.filter-chip').forEach(c=>c.classList.toggle('active',c===chip));renderProducts()});$('#sortSelect')?.addEventListener('change',renderProducts);
 $$('[data-filter-link]').forEach(a=>a.addEventListener('click',()=>{currentFilter=a.dataset.filterLink;$$('.filter-chip').forEach(c=>c.classList.toggle('active',c.dataset.filter===currentFilter));renderProducts()}));
 $('#searchInput')?.addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();const found=products.filter(p=>`${p.name} ${p.fabric} ${p.color}`.toLowerCase().includes(q)).slice(0,8);const sr=$('#searchResults');if(sr)sr.innerHTML=q?found.map(p=>`<button class="search-result" data-search-product="${p.id}"><img src="${asset(p.img)}" alt=""><span><b>${p.name}</b><small>${p.fabric} · ${money(p.price)}</small></span></button>`).join('')||'<span class="search-hint">No sarees found. Try another colour or fabric.</span>':'<span class="search-hint">Popular: Mulmul · Narayani · Sungudi</span>'});
-$('#searchResults')?.addEventListener('click',e=>{const r=e.target.closest('[data-search-product]');if(!r)return;closeSearch();quickView(r.dataset.searchProduct)});
+$('#searchResults')?.addEventListener('click',e=>{const r=e.target.closest('[data-search-product]');if(!r)return;closeSearch();window.location.href='product.html?id=' + r.dataset.searchProduct});
 
 // Apple-style interactive fluid 3D tilt & elevation on hero product cards
 function initHeroCardMotion() {
