@@ -35,7 +35,7 @@ let wishlist=JSON.parse(localStorage.getItem('kadha-wishlist')||'[]');
 let activeProduct=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
-function productCard(p){return `<article class="product-card" data-id="${p.id}"><div class="product-media"><img loading="lazy" src="${asset(p.img)}" alt="${p.name}"/><div class="badge-stack"><span class="badge badge-sale">-${p.discount}% OFF</span><span class="badge badge-type">${p.badge}</span></div><button class="wish-btn ${wishlist.includes(p.id)?'saved':''}" data-wish="${p.id}" aria-label="${wishlist.includes(p.id)?'Remove from':'Add to'} wishlist">${wishlist.includes(p.id)?'♥':'♡'}</button><button class="quick-view" data-quick="${p.id}"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg> Quick View</button></div><div class="product-info"><div class="product-meta"><span>${p.fabric}</span><span>${p.color}</span></div><h3>${p.name}</h3><p>${p.description}</p><div class="price-row"><span class="price-now">${money(p.price)}</span><span class="price-was">${money(p.was)}</span></div><div class="card-actions"><button class="add-btn" data-add="${p.id}"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 12H5.2L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg> Add</button><button class="book-btn" data-book="${p.name}">Book Drape</button></div></div></article>`}
+function productCard(p){return `<article class="product-card" data-id="${p.id}"><div class="product-media"><img loading="lazy" src="${asset(p.img)}" alt="${p.name}"/><div class="badge-stack"><span class="badge badge-sale">-${p.discount}% OFF</span><span class="badge badge-type">${p.badge}</span></div><button class="wish-btn ${wishlist.includes(p.id)?'saved':''}" data-wish="${p.id}" aria-label="${wishlist.includes(p.id)?'Remove from':'Add to'} wishlist">${wishlist.includes(p.id) ? '<svg class="vector-ico ico-heart filled" viewBox="0 0 24 24" width="16" height="16" fill="#b74347" stroke="#b74347" stroke-width="1.5" style="vertical-align:-2px;" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' : '<svg class="vector-ico ico-heart outline" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-2px;" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'}</button><button class="quick-view" data-quick="${p.id}"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg> Quick View</button></div><div class="product-info"><div class="product-meta"><span>${p.fabric}</span><span>${p.color}</span></div><h3>${p.name}</h3><p>${p.description}</p><div class="price-row"><span class="price-now">${money(p.price)}</span><span class="price-was">${money(p.was)}</span></div><div class="card-actions"><button class="add-btn" data-add="${p.id}"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 12H5.2L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg> Add</button><button class="book-btn" data-book="${p.name}">Book Drape</button></div></div></article>`}
 function renderProducts(){
   const grid = $('#productGrid');
   if(!grid) return;
@@ -214,10 +214,10 @@ function initAccountPage() {
                   </div>
                 </div>
                 <div class="order-progress-track">
-                  <div class="track-step done"><div class="track-step-dot">✓</div><span>Confirmed</span></div>
+                  <div class="track-step done"><div class="track-step-dot"><svg class="vector-ico ico-check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><span>Confirmed</span></div>
                   <div class="track-step ${match.status === 'Shipped' || match.status === 'Delivered' ? 'done' : ''}"><div class="track-step-dot">●</div><span>Handloom QC</span></div>
                   <div class="track-step ${match.status === 'Shipped' || match.status === 'Delivered' ? 'done' : ''}"><div class="track-step-dot">●</div><span>Shipped</span></div>
-                  <div class="track-step ${match.status === 'Delivered' ? 'done' : ''}"><div class="track-step-dot">★</div><span>Delivered</span></div>
+                  <div class="track-step ${match.status === 'Delivered' ? 'done' : ''}"><div class="track-step-dot"><svg class="vector-ico ico-star" viewBox="0 0 24 24" width="14" height="14" fill="#d89b35" aria-hidden="true"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div><span>Delivered</span></div>
                 </div>
               </div>
             `;
@@ -273,7 +273,7 @@ function ensureCheckoutModals() {
     <button class="modal-close" data-close aria-label="Close checkout">×</button>
     <div class="checkout-modal-content">
       <div class="checkout-form-col">
-        <span class="eyebrow" style="color:var(--emerald);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">🔒 SECURE ATELIER CHECKOUT</span>
+        <span class="eyebrow" style="color:var(--emerald);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;"><svg class="vector-ico ico-lock" viewBox="0 0 24 24" width="14" height="14" fill="none" style="vertical-align:-2px;display:inline-block;" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5" fill="#f59e0b" stroke="#d97706" stroke-width="1.2"/><path d="M7 10V6.5a5 5 0 0 1 10 0V10" stroke="#78716c" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="1.3" fill="#78350f"/><path d="M12 16.3v2" stroke="#78350f" stroke-width="1.3" stroke-linecap="round"/></svg> SECURE ATELIER CHECKOUT</span>
         <h2 id="checkoutModalTitle">Shipping Details</h2>
         <p>Your handloom sarees are carefully wrapped in unbleached cotton and dispatched with insured express delivery.</p>
         
@@ -304,7 +304,7 @@ function ensureCheckoutModals() {
               <span aria-hidden="true">→</span>
             </button>
             <div class="rzp-security-note">
-              <span>🔒 256-bit encrypted via Razorpay · Supports UPI, Cards, NetBanking</span>
+              <span><svg class="vector-ico ico-lock" viewBox="0 0 24 24" width="14" height="14" fill="none" style="vertical-align:-2px;display:inline-block;" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5" fill="#f59e0b" stroke="#d97706" stroke-width="1.2"/><path d="M7 10V6.5a5 5 0 0 1 10 0V10" stroke="#78716c" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="15" r="1.3" fill="#78350f"/><path d="M12 16.3v2" stroke="#78350f" stroke-width="1.3" stroke-linecap="round"/></svg> 256-bit encrypted via Razorpay · Supports UPI, Cards, NetBanking</span>
             </div>
           </div>
         </form>
@@ -334,7 +334,7 @@ function ensureCheckoutModals() {
         </div>
 
         <div class="razorpay-badge">
-          <span style="font-size:16px">💳</span>
+          <span><svg class="vector-ico ico-card" viewBox="0 0 24 24" width="18" height="18" fill="none" style="vertical-align:-3px;display:inline-block;" aria-hidden="true"><rect x="2" y="4" width="20" height="15" rx="3" fill="#2563eb"/><rect x="2" y="7.5" width="20" height="3" fill="#1e293b"/><rect x="5" y="13.5" width="4" height="3" rx="0.5" fill="#fbbf24"/><circle cx="16" cy="15" r="1.5" fill="#ef4444" opacity="0.85"/><circle cx="18" cy="15" r="1.5" fill="#f59e0b" opacity="0.85"/></svg></span>
           <div>
             <strong class="razorpay-badge-logo">Razorpay Trusted Gateway</strong>
             <small style="display:block;color:var(--muted);font-size:9px">UPI (GPay, PhonePe, Paytm), Cards, NetBanking</small>
@@ -347,7 +347,7 @@ function ensureCheckoutModals() {
   <!-- Order Success Modal -->
   <div class="modal success-modal" id="orderSuccessModal" role="dialog" aria-modal="true" aria-labelledby="orderSuccessTitle">
     <button class="modal-close" data-close aria-label="Close modal">×</button>
-    <div class="success-icon-wrap">✓</div>
+    <div class="success-icon-wrap"><svg class="vector-ico ico-check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;display:inline-block;" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div>
     <span class="eyebrow" style="color:var(--emerald);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">THANK YOU FOR YOUR PATRONAGE</span>
     <h2 id="orderSuccessTitle">Payment Successful!</h2>
     <p>Your payment has been verified via Razorpay and your bespoke handloom order has been scheduled for weaver preparation and hand-packing.</p>
