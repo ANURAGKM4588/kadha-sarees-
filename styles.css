@@ -1818,6 +1818,79 @@ body.dark .hero-title {
     margin-top: 6px !important;
   }
 
+  /* Keep bottom section below product cards strictly in-frame with clean mobile padding */
+  .hero-modern .hero-bottomline {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 24px 20px 0 !important;
+    margin: 28px 0 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    border-top: 1px solid var(--border) !important;
+  }
+  .hero-bottom-quote {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .hero-bottom-quote > span {
+    font-size: 32px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+  }
+  .hero-bottom-quote p {
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+    color: var(--muted) !important;
+  }
+  .hero-bottom-quote p strong {
+    font-size: 14px !important;
+    color: var(--deep) !important;
+    display: block !important;
+    margin-bottom: 2px !important;
+  }
+  .hero-bottom-quote > a {
+    font-size: 12px !important;
+    margin-top: 8px !important;
+    color: var(--emerald) !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  .hero-bottom-index {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-self: start !important;
+    border-top: 1px dashed var(--border) !important;
+    padding-top: 16px !important;
+  }
+  .hero-bottom-index > div {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 4px !important;
+  }
+  .hero-bottom-index b {
+    font-size: 26px !important;
+    font-weight: 600 !important;
+    color: var(--deep) !important;
+  }
+  .hero-bottom-index span {
+    font-size: 11px !important;
+    color: var(--muted) !important;
+  }
+  .hero-bottom-index a {
+    margin-left: auto !important;
+    color: var(--deep) !important;
+  }
+  .hero-bottom-index > strong {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    color: var(--deep) !important;
+  }
+
   /* 13. Mobile Header: Single-line Sign In button & spacing */
   .site-header {
     width: 100% !important;
