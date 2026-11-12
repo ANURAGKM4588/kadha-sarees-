@@ -1,0 +1,20 @@
+{
+  "name": "kadha-storefront",
+  "version": "1.0.0",
+  "description": "A responsive, static KADHA saree storefront built from the supplied brand identity and product photography. The homepage hero uses an editorial collage of the supplied saree images and keeps the existing KADHA copy and typography.",
+  "main": "admin.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0"
+  }
+}

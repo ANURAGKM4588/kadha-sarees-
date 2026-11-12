@@ -1,0 +1,17 @@
+# Environment variables and confidential keys
+.env
+.env.*
+!.env.example
+
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System and logs
+.DS_Store
+Thumbs.db
+.system_generated/
+*.log
+
