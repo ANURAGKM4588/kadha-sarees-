@@ -1735,6 +1735,18 @@ body.dark .hero-title {
     margin-bottom: 8px !important;
   }
 
+  /* Eyebrow in single line on mobile with zero text wrapping */
+  .hero-modern .eyebrow {
+    font-size: clamp(8px, 2.4vw, 10px) !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 6px !important;
+    letter-spacing: 0.08em !important;
+  }
+
   /* Exactly 2 lines minimal on mobile */
   .hero-title {
     display: flex !important;
@@ -1813,9 +1825,30 @@ body.dark .hero-title {
 
   .gallery-feature-link {
     height: 38px !important;
-    font-size: 10.5px !important;
-    padding: 0 14px !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    padding: 0 10px !important;
     margin-top: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.01em !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 999px !important;
+  }
+  .gallery-feature-link span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+  .gallery-feature-link span svg {
+    width: 11px !important;
+    height: 11px !important;
   }
 
   /* Keep bottom section below product cards strictly in-frame with clean mobile padding */
@@ -2032,4 +2065,76 @@ body.dark .hero-title {
     color: #f2f5ef !important;
     background: var(--surface) !important;
   }
+}
+
+/* ==============================================================================
+   HOME & STOREFRONT PRODUCT CARDS: REFINED MINIMAL PRESENTATION
+   Desktop: "View more" button reveals smoothly on mouse hover
+   Mobile: "View more" button stays hidden; card is clean and tap-friendly
+   ============================================================================== */
+@media (hover: hover) and (min-width: 721px) {
+  .product-card .quick-view {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -30%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    border: 0 !important;
+    background: #ffffff !important;
+    color: var(--deep) !important;
+    padding: 10px 18px !important;
+    border-radius: 999px !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16) !important;
+    font: 700 10.5px 'Manrope', sans-serif !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    white-space: nowrap !important;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s !important;
+    z-index: 5 !important;
+    cursor: pointer !important;
+  }
+  .product-card:hover .quick-view,
+  .product-card:focus-within .quick-view {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  .product-card .quick-view:hover {
+    background: var(--deep) !important;
+    color: #ffffff !important;
+    transform: translate(-50%, -50%) scale(1.04) !important;
+  }
+  .product-card .quick-view svg {
+    width: 13px !important;
+    height: 13px !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 2 !important;
+  }
+}
+
+@media (max-width: 720px) {
+  /* On mobile touch devices, reveal button is hidden to keep product card clean & minimal */
+  .product-card .quick-view {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Ensure clean minimal product-info across all screen sizes */
+.product-info h3 {
+  margin: 6px 0 6px !important;
+}
+.product-info .price-row {
+  margin-top: 6px !important;
+}
+.product-card .card-actions {
+  margin-top: 10px !important;
+  padding-top: 10px !important;
 }
