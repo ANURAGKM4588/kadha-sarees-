@@ -7,7 +7,7 @@
 
   // State
   let state = {
-    activeTab: 'orders',
+    activeTab: 'products', // Default to products so the Product Adding Section is instantly visible!
     orderFilter: 'all',
     orderSearch: '',
     productSearch: '',
@@ -38,39 +38,89 @@
   }
 
   // ============================================================================
-  // TAB NAVIGATION
+  // TAB NAVIGATION (Sidebar & Top Horizontal Tabs Synchronized)
   // ============================================================================
+  const tabTitles = {
+    products: { title: 'Product Adding & Catalogue', sub: 'Publish new authentic handloom sarees and manage store availability' },
+    orders: { title: 'Orders & Payments', sub: 'Track customer orders, contact info, and payment confirmation status' },
+    customers: { title: 'Customer & Patron Directory', sub: 'Verified customer phone numbers, delivery destinations, and order history' }
+  };
+
+  function switchTab(tabKey) {
+    if (!tabKey || !tabTitles[tabKey]) return;
+    state.activeTab = tabKey;
+
+    // Sync sidebar items
+    document.querySelectorAll('.nav-item[data-tab]').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-tab') === tabKey);
+    });
+
+    // Sync top horizontal tabs
+    document.querySelectorAll('.top-tab[data-tab]').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-tab') === tabKey);
+    });
+
+    // Show corresponding tab pane
+    document.querySelectorAll('.tab-pane').forEach((pane) => pane.classList.remove('active'));
+    const paneId = tabKey === 'products' ? 'paneProducts' : tabKey === 'orders' ? 'paneOrders' : 'paneCustomers';
+    const activePane = document.getElementById(paneId);
+    if (activePane) activePane.classList.add('active');
+
+    // Update titles in topbar
+    const titleEl = document.getElementById('pageTitle');
+    const subEl = document.getElementById('pageSubtitle');
+    if (titleEl) titleEl.textContent = tabTitles[tabKey].title;
+    if (subEl) subEl.textContent = tabTitles[tabKey].sub;
+
+    // Update hash silently
+    if (window.location.hash !== `#${tabKey}`) {
+      history.replaceState(null, null, `#${tabKey}`);
+    }
+  }
+
+  function focusAddProduct() {
+    switchTab('products');
+    const section = document.getElementById('addProductSection');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      section.classList.remove('highlight-pulse');
+      void section.offsetWidth; // retrigger animation
+      section.classList.add('highlight-pulse');
+    }
+    const nameInput = document.getElementById('prodName');
+    if (nameInput) {
+      setTimeout(() => nameInput.focus(), 250);
+    }
+  }
+
   function initTabs() {
-    const navItems = document.querySelectorAll('.nav-item[data-tab]');
-    const titles = {
-      orders: { title: 'Orders & Payments', sub: 'Track customer orders, contact info, and payment confirmation status' },
-      products: { title: 'Add & Manage Products', sub: 'Publish new authentic handloom sarees and manage store availability' },
-      customers: { title: 'Customer & Patron Directory', sub: 'Verified customer phone numbers, delivery destinations, and order history' }
-    };
-
-    navItems.forEach((btn) => {
+    // Sidebar nav click
+    document.querySelectorAll('.nav-item[data-tab]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const tabKey = btn.getAttribute('data-tab');
-        if (!tabKey || tabKey === state.activeTab) return;
-
-        state.activeTab = tabKey;
-        navItems.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // Show pane
-        document.querySelectorAll('.tab-pane').forEach((pane) => pane.classList.remove('active'));
-        const activePane = document.getElementById(
-          tabKey === 'orders' ? 'paneOrders' : tabKey === 'products' ? 'paneProducts' : 'paneCustomers'
-        );
-        if (activePane) activePane.classList.add('active');
-
-        // Update topbar titles
-        const titleEl = document.getElementById('pageTitle');
-        const subEl = document.getElementById('pageSubtitle');
-        if (titleEl && titles[tabKey]) titleEl.textContent = titles[tabKey].title;
-        if (subEl && titles[tabKey]) subEl.textContent = titles[tabKey].sub;
+        switchTab(btn.getAttribute('data-tab'));
       });
     });
+
+    // Top horizontal tabs click
+    document.querySelectorAll('.top-tab[data-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        switchTab(btn.getAttribute('data-tab'));
+      });
+    });
+
+    // Add Product shortcut buttons
+    const topbarAddBtn = document.getElementById('topbarAddProductBtn');
+    const sidebarAddBtn = document.getElementById('sidebarAddProductBtn');
+    if (topbarAddBtn) topbarAddBtn.addEventListener('click', focusAddProduct);
+    if (sidebarAddBtn) sidebarAddBtn.addEventListener('click', focusAddProduct);
+
+    // Initial tab from hash or default to products
+    const initialHash = window.location.hash.replace('#', '').trim();
+    if (initialHash === 'orders' || initialHash === 'products' || initialHash === 'customers') {
+      switchTab(initialHash);
+    } else {
+      switchTab('products'); // Default to products view so Product Adding is instantly seen!
+    }
   }
 
   // ============================================================================
@@ -156,6 +206,14 @@
     if (sProdCount) sProdCount.textContent = state.products.length;
     if (sCustCount) sCustCount.textContent = state.customers.length || state.orders.length;
 
+    // Top horizontal tabs count pills
+    const tProdCount = document.getElementById('topProductCount');
+    const tOrdCount = document.getElementById('topOrderCount');
+    const tCustCount = document.getElementById('topCustomerCount');
+    if (tProdCount) tProdCount.textContent = state.products.length;
+    if (tOrdCount) tOrdCount.textContent = state.orders.length;
+    if (tCustCount) tCustCount.textContent = state.customers.length || state.orders.length;
+
     // Filter pill count badges
     const cAll = document.getElementById('countAll');
     const cPaid = document.getElementById('countPaid');
@@ -168,7 +226,187 @@
   }
 
   // ============================================================================
-  // TAB 1: ORDERS & PAYMENTS
+  // TAB: ADD & MANAGE PRODUCTS (Live publisher & catalogue)
+  // ============================================================================
+  function renderProducts() {
+    const tbody = document.getElementById('productsTbody');
+    const catCount = document.getElementById('catalogueCount');
+    if (!tbody) return;
+
+    if (catCount) catCount.textContent = state.products.length;
+
+    const query = state.productSearch.toLowerCase().trim();
+    const filtered = state.products.filter((p) => {
+      if (!query) return true;
+      const haystack = `${p.name} ${p.category} ${p.fabric} ${p.color} ${p.badge}`.toLowerCase();
+      return haystack.includes(query);
+    });
+
+    tbody.innerHTML = filtered.map((p) => {
+      const discountText = p.discount ? `-${p.discount}% OFF` : '—';
+      const priceText = formatINR(p.price);
+      const wasText = p.was ? formatINR(p.was) : '';
+
+      return `
+        <tr>
+          <td>
+            <div class="product-cell">
+              <img class="product-thumb" src="assets/${p.img}" alt="${p.name}">
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;flex-direction:column">
+              <strong style="font-size:13.5px;color:var(--deep)">${p.name}</strong>
+              <small style="color:var(--emerald);font-weight:700;letter-spacing:0.04em">${p.category || 'Handloom'}</small>
+            </div>
+          </td>
+          <td>
+            <div style="font-size:13px">
+              <span>${p.fabric || 'Pure Handloom'}</span>
+              <span style="color:var(--muted);display:block;font-size:11.5px">${p.color || 'Artisan tone'}</span>
+            </div>
+          </td>
+          <td>
+            <div>
+              <strong style="font-size:14px;color:var(--deep)">${priceText}</strong>
+              ${wasText ? `<small style="display:block;text-decoration:line-through;color:var(--muted);font-size:11px">${wasText}</small>` : ''}
+            </div>
+          </td>
+          <td>
+            <span style="font-family:'Manrope',sans-serif;font-weight:700;color:#c53030;font-size:12px">${discountText}</span>
+          </td>
+          <td>
+            <span class="badge-status" style="background:var(--surface-alt);color:var(--deep);border:1px solid var(--border)">
+              ${p.badge || 'Handloom'}
+            </span>
+          </td>
+          <td>
+            <div style="display:flex;gap:8px">
+              <a href="product.html?id=${p.id}" target="_blank" class="btn-action-sm">
+                View
+              </a>
+              <button class="btn-delete-sm" data-delete-id="${p.id}" title="Remove from store">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Attach delete listeners
+    tbody.querySelectorAll('.btn-delete-sm').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const prodId = btn.getAttribute('data-delete-id');
+        const prod = state.products.find((x) => x.id === prodId);
+        if (!confirm(`Are you sure you want to remove "${prod?.name || prodId}" from the live store?`)) {
+          return;
+        }
+
+        try {
+          await fetch(`/api/products/${prodId}`, { method: 'DELETE' });
+        } catch (e) {}
+
+        state.products = state.products.filter((x) => x.id !== prodId);
+        renderKPIs();
+        renderProducts();
+        showToast(`Removed "${prod?.name || 'Saree'}" from catalogue`);
+      });
+    });
+  }
+
+  function initAddProductForm() {
+    const form = document.getElementById('addProductForm');
+    const imgSelect = document.getElementById('prodImgSelect');
+    const imgPreview = document.getElementById('formImgPreview');
+    const badgeSelect = document.getElementById('prodBadge');
+    const previewTag = document.getElementById('previewBadgeTag');
+
+    if (imgSelect && imgPreview) {
+      imgSelect.addEventListener('change', () => {
+        imgPreview.src = `assets/${imgSelect.value}`;
+      });
+    }
+
+    if (badgeSelect && previewTag) {
+      badgeSelect.addEventListener('change', () => {
+        previewTag.textContent = badgeSelect.value.toUpperCase();
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('prodName')?.value.trim();
+        const category = document.getElementById('prodCategory')?.value;
+        const fabric = document.getElementById('prodFabric')?.value.trim();
+        const color = document.getElementById('prodColor')?.value.trim();
+        const badge = document.getElementById('prodBadge')?.value;
+        const price = Number(document.getElementById('prodPrice')?.value);
+        const was = Number(document.getElementById('prodWas')?.value) || Math.round(price * 1.18);
+        const desc = document.getElementById('prodDesc')?.value.trim();
+        const img = document.getElementById('prodImgSelect')?.value;
+
+        if (!name || !price) {
+          showToast('Please provide saree name and price');
+          return;
+        }
+
+        const newSaree = {
+          name,
+          category,
+          fabric,
+          color,
+          badge,
+          price,
+          was,
+          description: desc,
+          img
+        };
+
+        const submitBtn = document.getElementById('submitProductBtn');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Publishing to store...</span>';
+        }
+
+        try {
+          const res = await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newSaree)
+          });
+
+          if (res.ok) {
+            const created = await res.json();
+            state.products.unshift(created);
+          } else {
+            // Local fallback
+            newSaree.id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(100 + Math.random() * 900);
+            state.products.unshift(newSaree);
+          }
+
+          renderKPIs();
+          renderProducts();
+          showToast(`Published "${name}" to store catalogue!`);
+          form.reset();
+          if (imgPreview) imgPreview.src = `assets/${imgSelect.value}`;
+        } catch (err) {
+          console.error('Error submitting product:', err);
+          showToast('Could not reach backend, added to local view');
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>＋ Publish Saree to Store</span>';
+          }
+        }
+      });
+    }
+  }
+
+  // ============================================================================
+  // TAB: ORDERS & PAYMENTS
   // ============================================================================
   function renderOrders() {
     const tbody = document.getElementById('ordersTbody');
@@ -388,194 +626,13 @@
   }
 
   // ============================================================================
-  // TAB 2: PRODUCTS ADDING & CATALOGUE
-  // ============================================================================
-  function renderProducts() {
-    const tbody = document.getElementById('productsTbody');
-    const catCount = document.getElementById('catalogueCount');
-    if (!tbody) return;
-
-    if (catCount) catCount.textContent = state.products.length;
-
-    const query = state.productSearch.toLowerCase().trim();
-    const filtered = state.products.filter((p) => {
-      if (!query) return true;
-      const haystack = `${p.name} ${p.category} ${p.fabric} ${p.color} ${p.badge}`.toLowerCase();
-      return haystack.includes(query);
-    });
-
-    tbody.innerHTML = filtered.map((p) => {
-      const discountText = p.discount ? `-${p.discount}% OFF` : '—';
-      const priceText = formatINR(p.price);
-      const wasText = p.was ? formatINR(p.was) : '';
-
-      return `
-        <tr>
-          <td>
-            <div class="product-cell">
-              <img class="product-thumb" src="assets/${p.img}" alt="${p.name}">
-            </div>
-          </td>
-          <td>
-            <div style="display:flex;flex-direction:column">
-              <strong style="font-size:13.5px;color:var(--deep)">${p.name}</strong>
-              <small style="color:var(--emerald);font-weight:700;letter-spacing:0.04em">${p.category || 'Handloom'}</small>
-            </div>
-          </td>
-          <td>
-            <div style="font-size:13px">
-              <span>${p.fabric || 'Pure Handloom'}</span>
-              <span style="color:var(--muted);display:block;font-size:11.5px">${p.color || 'Artisan tone'}</span>
-            </div>
-          </td>
-          <td>
-            <div>
-              <strong style="font-size:14px;color:var(--deep)">${priceText}</strong>
-              ${wasText ? `<small style="display:block;text-decoration:line-through;color:var(--muted);font-size:11px">${wasText}</small>` : ''}
-            </div>
-          </td>
-          <td>
-            <span style="font-family:'Manrope',sans-serif;font-weight:700;color:#c53030;font-size:12px">${discountText}</span>
-          </td>
-          <td>
-            <span class="badge-status" style="background:var(--surface-alt);color:var(--deep);border:1px solid var(--border)">
-              ${p.badge || 'Handloom'}
-            </span>
-          </td>
-          <td>
-            <div style="display:flex;gap:8px">
-              <a href="product.html?id=${p.id}" target="_blank" class="btn-action-sm">
-                View
-              </a>
-              <button class="btn-delete-sm" data-delete-id="${p.id}" title="Remove from store">
-                Delete
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
-    }).join('');
-
-    // Attach delete listeners
-    tbody.querySelectorAll('.btn-delete-sm').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const prodId = btn.getAttribute('data-delete-id');
-        const prod = state.products.find((x) => x.id === prodId);
-        if (!confirm(`Are you sure you want to remove "${prod?.name || prodId}" from the live store?`)) {
-          return;
-        }
-
-        try {
-          await fetch(`/api/products/${prodId}`, { method: 'DELETE' });
-        } catch (e) {}
-
-        state.products = state.products.filter((x) => x.id !== prodId);
-        renderKPIs();
-        renderProducts();
-        showToast(`Removed "${prod?.name || 'Saree'}" from catalogue`);
-      });
-    });
-  }
-
-  function initAddProductForm() {
-    const form = document.getElementById('addProductForm');
-    const imgSelect = document.getElementById('prodImgSelect');
-    const imgPreview = document.getElementById('formImgPreview');
-    const badgeSelect = document.getElementById('prodBadge');
-    const previewTag = document.getElementById('previewBadgeTag');
-
-    if (imgSelect && imgPreview) {
-      imgSelect.addEventListener('change', () => {
-        imgPreview.src = `assets/${imgSelect.value}`;
-      });
-    }
-
-    if (badgeSelect && previewTag) {
-      badgeSelect.addEventListener('change', () => {
-        previewTag.textContent = badgeSelect.value.toUpperCase();
-      });
-    }
-
-    if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById('prodName')?.value.trim();
-        const category = document.getElementById('prodCategory')?.value;
-        const fabric = document.getElementById('prodFabric')?.value.trim();
-        const color = document.getElementById('prodColor')?.value.trim();
-        const badge = document.getElementById('prodBadge')?.value;
-        const price = Number(document.getElementById('prodPrice')?.value);
-        const was = Number(document.getElementById('prodWas')?.value) || Math.round(price * 1.18);
-        const desc = document.getElementById('prodDesc')?.value.trim();
-        const img = document.getElementById('prodImgSelect')?.value;
-
-        if (!name || !price) {
-          showToast('Please provide saree name and price');
-          return;
-        }
-
-        const newSaree = {
-          name,
-          category,
-          fabric,
-          color,
-          badge,
-          price,
-          was,
-          description: desc,
-          img
-        };
-
-        const submitBtn = document.getElementById('submitProductBtn');
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<span>Publishing to store...</span>';
-        }
-
-        try {
-          const res = await fetch('/api/products', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newSaree)
-          });
-
-          if (res.ok) {
-            const created = await res.json();
-            state.products.unshift(created);
-          } else {
-            // Local fallback
-            newSaree.id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(100 + Math.random() * 900);
-            state.products.unshift(newSaree);
-          }
-
-          renderKPIs();
-          renderProducts();
-          showToast(`Published "${name}" to store catalogue!`);
-          form.reset();
-          if (imgPreview) imgPreview.src = `assets/${imgSelect.value}`;
-        } catch (err) {
-          console.error('Error submitting product:', err);
-          showToast('Could not reach backend, added to local view');
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span>＋ Publish Saree to Store</span>';
-          }
-        }
-      });
-    }
-  }
-
-  // ============================================================================
-  // TAB 3: CUSTOMER DATA DIRECTORY
+  // TAB: CUSTOMER DATA DIRECTORY
   // ============================================================================
   function renderCustomers() {
     const tbody = document.getElementById('customersTbody');
     const emptyState = document.getElementById('customersEmptyState');
     if (!tbody) return;
 
-    // Use fetched customers or fallback aggregate from orders
     let list = state.customers;
     if (!list || list.length === 0) {
       const map = new Map();
@@ -759,7 +816,7 @@
   initListeners();
 
   // Load initial data
-  fetchOrders();
   fetchProducts();
+  fetchOrders();
   fetchCustomers();
 })();
