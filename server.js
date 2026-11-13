@@ -77,7 +77,9 @@ const defaultOrders = [
     amount: 6499,
     status: 'Shipped',
     payment_status: 'Completed',
-    payment_id: 'pay_Pq692mN2bZ'
+    payment_id: 'pay_Pq692mN2bZ',
+    courier: 'Blue Dart Express',
+    awb_tracking: 'BD88219401'
   },
   {
     id: '#KD-2839',
@@ -123,7 +125,9 @@ const defaultOrders = [
     amount: 3399,
     status: 'Shipped',
     payment_status: 'Completed',
-    payment_id: 'pay_Pq341aK9jT'
+    payment_id: 'pay_Pq341aK9jT',
+    courier: 'Delhivery Surface',
+    awb_tracking: 'DEL77319042'
   },
   {
     id: '#KD-2836',
@@ -184,10 +188,10 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// Products: POST (Add new saree product)
+// Products: POST (Add new saree product with luxury fashion attributes)
 app.post('/api/products', async (req, res) => {
   try {
-    const { name, fabric, category, color, description, price, was, discount, badge, img } = req.body;
+    const { name, fabric, category, color, description, price, was, discount, badge, img, stock_type, blouse_piece, care } = req.body;
     if (!name || !price) {
       return res.status(400).json({ error: 'Saree name and price are required' });
     }
@@ -207,7 +211,10 @@ app.post('/api/products', async (req, res) => {
       was: parsedWas,
       discount: parsedDiscount > 0 ? parsedDiscount : 10,
       badge: badge || 'Handloom',
-      img: img || 'Beige Ikat Mulmul Saree.png'
+      img: img || 'Beige Ikat Mulmul Saree.png',
+      stock_type: stock_type || '1 of 1 (Exclusive)',
+      blouse_piece: blouse_piece || 'Running 0.8m Included',
+      care: care || 'Dry Clean Recommended'
     };
 
     if (supabase) {
@@ -270,7 +277,9 @@ app.get('/api/orders', async (req, res) => {
       amount: o.amount || 0,
       status: o.status || 'Processing',
       payment_status: o.payment_status || (o.status === 'Paid' || o.status === 'Shipped' || o.status === 'Delivered' ? 'Completed' : (o.status === 'Failed' ? 'Failed' : 'Pending')),
-      failure_reason: o.failure_reason || ''
+      failure_reason: o.failure_reason || '',
+      courier: o.courier || '',
+      awb_tracking: o.awb_tracking || ''
     }));
     res.json(formatted);
   } catch (err) {
@@ -278,16 +287,18 @@ app.get('/api/orders', async (req, res) => {
   }
 });
 
-// Orders: PATCH (Update order fulfillment or payment status)
+// Orders: PATCH (Update order fulfillment, tracking or payment status)
 app.patch('/api/orders/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, payment_status } = req.body;
+    const { status, payment_status, courier, awb_tracking } = req.body;
     if (supabase) {
       try {
         const updateObj = {};
         if (status) updateObj.status = status;
         if (payment_status) updateObj.payment_status = payment_status;
+        if (courier !== undefined) updateObj.courier = courier;
+        if (awb_tracking !== undefined) updateObj.awb_tracking = awb_tracking;
         await supabase.from('orders').update(updateObj).eq('id', id);
       } catch (err) {
         console.error('Supabase order update error:', err);
@@ -297,11 +308,28 @@ app.patch('/api/orders/:id', async (req, res) => {
     if (order) {
       if (status) order.status = status;
       if (payment_status) order.payment_status = payment_status;
+      if (courier !== undefined) order.courier = courier;
+      if (awb_tracking !== undefined) order.awb_tracking = awb_tracking;
     }
-    res.json({ success: true, message: 'Order status updated', id, status, payment_status });
+    res.json({ success: true, message: 'Order status updated', id, status, payment_status, courier, awb_tracking });
   } catch (err) {
     res.status(500).json({ error: 'Failed to update order' });
   }
+});
+
+// Bookings: GET (Drape consultations for clienteling)
+app.get('/api/bookings', async (req, res) => {
+  const defaultBookings = [
+    { id: 1, name: 'Ananya Deshmukh', email: 'ananya.d@gmail.com', phone: '+91 98202 55102', interest: 'Maroon Narayani Pattu - Bridal drape styling', time_slot: 'Nov 14, 2026 at 4:00 PM', status: 'Confirmed' },
+    { id: 2, name: 'Sneha Nambiar', email: 'sneha.n@outlook.com', phone: '+91 97401 12903', interest: 'Mulmul Cotton Sarees - Everyday drape selection', time_slot: 'Nov 15, 2026 at 11:30 AM', status: 'Pending' }
+  ];
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from('bookings').select('*').order('created_at', { ascending: false });
+      if (!error && data && data.length) return res.json(data);
+    } catch (e) {}
+  }
+  res.json(defaultBookings);
 });
 
 // Customers: GET (Aggregated directory of patrons with order counts and spent totals)
