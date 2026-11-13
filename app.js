@@ -581,6 +581,24 @@ async function handleRazorpayPayment(e) {
     };
 
     const rzpInstance = new window.Razorpay(options);
+    rzpInstance.on('payment.failed', function (resp) {
+      console.warn('Razorpay payment failed:', resp.error);
+      fetch('/api/razorpay/payment-failed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_name: name,
+          customer_email: email,
+          customer_phone: phone,
+          delivery_address: `${address}, ${city} - ${pincode}`,
+          product_name: items.map(p => `${p.name} (x${p.qty})`).join(', '),
+          img: items[0]?.img || 'Beige Ikat Mulmul Saree.png',
+          amount: totalAmount,
+          failure_reason: resp.error?.description || 'Transaction declined by bank or user'
+        })
+      }).catch(()=>{});
+      toast('Payment failed: ' + (resp.error?.description || 'Transaction could not be completed'));
+    });
     rzpInstance.open();
 
   } catch (err) {

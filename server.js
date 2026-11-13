@@ -49,11 +49,98 @@ const defaultProducts = [
 ];
 
 const defaultOrders = [
-  {id:'#KD-2841',name:'Aarushi Mehta',email:'aarushi.m@email.com',initials:'AM',product:'Beige Ikat Mulmul',img:'Beige Ikat Mulmul Saree.png',date:'Nov 12, 2026',amount:2999,status:'Processing'},
-  {id:'#KD-2840',name:'Maya Krishnan',email:'maya.k@email.com',initials:'MK',product:'Bottle Green Narayani',img:'Bottle Green Narayani Pattu.png',date:'Nov 12, 2026',amount:6499,status:'Shipped'},
-  {id:'#KD-2839',name:'Devika Rao',email:'devika.r@email.com',initials:'DR',product:'Mustard Sungudi Cotton',img:'Mustard Yellow Sungudi Cotton Saree.png',date:'Nov 11, 2026',amount:2799,status:'Delivered'},
-  {id:'#KD-2838',name:'Nandita Shah',email:'nandita.s@email.com',initials:'NS',product:'Magenta Narayani Pattu',img:'Magenta Narayani Pattu.png',date:'Nov 11, 2026',amount:6999,status:'Processing'},
-  {id:'#KD-2837',name:'Priya Menon',email:'priya.m@email.com',initials:'PM',product:'Yellow Teal Mulmul',img:'Yellow Teal Mulmul Cotton Saree.png',date:'Nov 10, 2026',amount:3399,status:'Shipped'}
+  {
+    id: '#KD-2841',
+    customer_name: 'Aarushi Mehta',
+    customer_email: 'aarushi.m@email.com',
+    customer_phone: '+91 98201 44521',
+    delivery_address: 'Flat 402, Sea Green Apts, Worli, Mumbai - 400018',
+    initials: 'AM',
+    product_name: 'Beige Ikat Mulmul Saree',
+    img: 'Beige Ikat Mulmul Saree.png',
+    date: 'Nov 12, 2026',
+    amount: 2999,
+    status: 'Processing',
+    payment_status: 'Completed',
+    payment_id: 'pay_Pq781xM9sA'
+  },
+  {
+    id: '#KD-2840',
+    customer_name: 'Maya Krishnan',
+    customer_email: 'maya.k@email.com',
+    customer_phone: '+91 94440 18273',
+    delivery_address: '14/2 Karpagam Gardens, Adyar, Chennai - 600020',
+    initials: 'MK',
+    product_name: 'Bottle Green Narayani Pattu',
+    img: 'Bottle Green Narayani Pattu.png',
+    date: 'Nov 12, 2026',
+    amount: 6499,
+    status: 'Shipped',
+    payment_status: 'Completed',
+    payment_id: 'pay_Pq692mN2bZ'
+  },
+  {
+    id: '#KD-2839',
+    customer_name: 'Devika Rao',
+    customer_email: 'devika.r@email.com',
+    customer_phone: '+91 98800 31245',
+    delivery_address: '77 Defence Colony, Indiranagar, Bengaluru - 560038',
+    initials: 'DR',
+    product_name: 'Mustard Sungudi Cotton Saree',
+    img: 'Mustard Yellow Sungudi Cotton Saree.png',
+    date: 'Nov 11, 2026',
+    amount: 2799,
+    status: 'Delivered',
+    payment_status: 'Completed',
+    payment_id: 'pay_Pq511kL0xY'
+  },
+  {
+    id: '#KD-2838',
+    customer_name: 'Nandita Shah',
+    customer_email: 'nandita.s@email.com',
+    customer_phone: '+91 98250 88219',
+    delivery_address: 'B-12 Gulmohar Park, Satellite, Ahmedabad - 380015',
+    initials: 'NS',
+    product_name: 'Magenta Narayani Pattu',
+    img: 'Magenta Narayani Pattu.png',
+    date: 'Nov 11, 2026',
+    amount: 6999,
+    status: 'Failed',
+    payment_status: 'Failed',
+    failure_reason: 'Bank server timeout during OTP verification',
+    payment_id: 'pay_FAILED_981'
+  },
+  {
+    id: '#KD-2837',
+    customer_name: 'Priya Menon',
+    customer_email: 'priya.m@email.com',
+    customer_phone: '+91 97455 60192',
+    delivery_address: 'Rose Villa, Jawahar Nagar, Kochi - 682020',
+    initials: 'PM',
+    product_name: 'Yellow Teal Mulmul Cotton Saree',
+    img: 'Yellow Teal Mulmul Cotton Saree.png',
+    date: 'Nov 10, 2026',
+    amount: 3399,
+    status: 'Shipped',
+    payment_status: 'Completed',
+    payment_id: 'pay_Pq341aK9jT'
+  },
+  {
+    id: '#KD-2836',
+    customer_name: 'Kavita Sundaram',
+    customer_email: 'kavita.s@email.com',
+    customer_phone: '+91 98401 77334',
+    delivery_address: '22 Jubilee Hills, Road 36, Hyderabad - 500033',
+    initials: 'KS',
+    product_name: 'Maroon Narayani Pattu',
+    img: 'Maroon Narayani Pattu.png',
+    date: 'Nov 09, 2026',
+    amount: 6799,
+    status: 'Pending',
+    payment_status: 'Pending',
+    failure_reason: 'Awaiting UPI authentication from user bank app',
+    payment_id: 'pay_PEND_441'
+  }
 ];
 
 // ==============================================================================
@@ -87,13 +174,78 @@ app.get('/api/health', async (req, res) => {
 app.get('/api/products', async (req, res) => {
   if (!supabase) return res.json(defaultProducts);
   try {
-    const { data, error } = await supabase.from('products').select('*');
+    const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
     if (error || !data || data.length === 0) {
       return res.json(defaultProducts);
     }
     res.json(data);
   } catch (err) {
     res.json(defaultProducts);
+  }
+});
+
+// Products: POST (Add new saree product)
+app.post('/api/products', async (req, res) => {
+  try {
+    const { name, fabric, category, color, description, price, was, discount, badge, img } = req.body;
+    if (!name || !price) {
+      return res.status(400).json({ error: 'Saree name and price are required' });
+    }
+    const cleanId = (name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'saree') + '-' + Math.floor(100 + Math.random() * 900);
+    const parsedPrice = Number(price);
+    const parsedWas = Number(was) || Math.round(parsedPrice * 1.18);
+    const parsedDiscount = Number(discount) || Math.round(((parsedWas - parsedPrice) / parsedWas) * 100);
+
+    const newProduct = {
+      id: cleanId,
+      name,
+      fabric: fabric || category || 'Handloom Silk',
+      category: category || 'Narayani',
+      color: color || 'Heritage Color',
+      description: description || 'Artisanal handwoven saree shaped on authentic traditional pit looms.',
+      price: parsedPrice,
+      was: parsedWas,
+      discount: parsedDiscount > 0 ? parsedDiscount : 10,
+      badge: badge || 'Handloom',
+      img: img || 'Beige Ikat Mulmul Saree.png'
+    };
+
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from('products').insert([newProduct]).select();
+        if (!error && data) {
+          defaultProducts.unshift(newProduct);
+          return res.status(201).json(data[0]);
+        }
+      } catch (err) {
+        console.error('Supabase product insert error:', err);
+      }
+    }
+
+    defaultProducts.unshift(newProduct);
+    res.status(201).json(newProduct);
+  } catch (err) {
+    console.error('Error adding product:', err);
+    res.status(500).json({ error: 'Failed to add product' });
+  }
+});
+
+// Products: DELETE (Remove product)
+app.delete('/api/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (supabase) {
+      try {
+        await supabase.from('products').delete().eq('id', id);
+      } catch (err) {
+        console.error('Supabase product delete error:', err);
+      }
+    }
+    const idx = defaultProducts.findIndex(p => p.id === id);
+    if (idx !== -1) defaultProducts.splice(idx, 1);
+    res.json({ success: true, message: 'Product removed from catalogue', id });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete product' });
   }
 });
 
@@ -107,18 +259,134 @@ app.get('/api/orders', async (req, res) => {
     }
     const formatted = data.map(o => ({
       id: o.id,
-      name: o.customer_name || o.name,
-      email: o.customer_email || o.email,
+      name: o.customer_name || o.name || 'Patron',
+      email: o.customer_email || o.email || 'patron@example.com',
+      phone: o.customer_phone || o.phone || '+91 98000 00000',
+      address: o.delivery_address || o.address || 'Address on file',
       initials: o.initials || (o.customer_name ? o.customer_name.split(' ').map(n=>n[0]).join('').slice(0,2) : 'KD'),
-      product: o.product_name || o.product,
-      img: o.img,
+      product: o.product_name || o.product || 'Handloom Saree',
+      img: o.img || 'Beige Ikat Mulmul Saree.png',
       date: o.date || new Date(o.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      amount: o.amount,
-      status: o.status || 'Processing'
+      amount: o.amount || 0,
+      status: o.status || 'Processing',
+      payment_status: o.payment_status || (o.status === 'Paid' || o.status === 'Shipped' || o.status === 'Delivered' ? 'Completed' : (o.status === 'Failed' ? 'Failed' : 'Pending')),
+      failure_reason: o.failure_reason || ''
     }));
     res.json(formatted);
   } catch (err) {
     res.json(defaultOrders);
+  }
+});
+
+// Orders: PATCH (Update order fulfillment or payment status)
+app.patch('/api/orders/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, payment_status } = req.body;
+    if (supabase) {
+      try {
+        const updateObj = {};
+        if (status) updateObj.status = status;
+        if (payment_status) updateObj.payment_status = payment_status;
+        await supabase.from('orders').update(updateObj).eq('id', id);
+      } catch (err) {
+        console.error('Supabase order update error:', err);
+      }
+    }
+    const order = defaultOrders.find(o => o.id === id);
+    if (order) {
+      if (status) order.status = status;
+      if (payment_status) order.payment_status = payment_status;
+    }
+    res.json({ success: true, message: 'Order status updated', id, status, payment_status });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update order' });
+  }
+});
+
+// Customers: GET (Aggregated directory of patrons with order counts and spent totals)
+app.get('/api/customers', async (req, res) => {
+  let ordersList = defaultOrders;
+  if (supabase) {
+    try {
+      const { data } = await supabase.from('orders').select('*');
+      if (data && data.length) ordersList = data;
+    } catch (e) {}
+  }
+
+  const map = new Map();
+  ordersList.forEach(o => {
+    const email = (o.customer_email || o.email || '').toLowerCase().trim();
+    if (!email) return;
+    const name = o.customer_name || o.name || 'Valued Patron';
+    const phone = o.customer_phone || o.phone || '—';
+    const address = o.delivery_address || o.address || '—';
+    const amount = Number(o.amount) || 0;
+    const pStatus = o.payment_status || (o.status === 'Paid' || o.status === 'Shipped' || o.status === 'Delivered' ? 'Completed' : (o.status === 'Failed' ? 'Failed' : 'Pending'));
+    const isCompleted = (pStatus === 'Completed');
+
+    if (!map.has(email)) {
+      map.set(email, {
+        name,
+        email,
+        phone,
+        address,
+        initials: name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),
+        totalOrders: 1,
+        completedOrders: isCompleted ? 1 : 0,
+        failedOrders: pStatus === 'Failed' ? 1 : 0,
+        totalSpent: isCompleted ? amount : 0,
+        lastOrderDate: o.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        lastPaymentStatus: pStatus
+      });
+    } else {
+      const existing = map.get(email);
+      existing.totalOrders += 1;
+      if (isCompleted) {
+        existing.completedOrders += 1;
+        existing.totalSpent += amount;
+      }
+      if (pStatus === 'Failed') existing.failedOrders += 1;
+      if (phone !== '—') existing.phone = phone;
+      if (address !== '—') existing.address = address;
+    }
+  });
+
+  res.json(Array.from(map.values()));
+});
+
+// Razorpay: POST Payment Failed Logger
+app.post('/api/razorpay/payment-failed', async (req, res) => {
+  try {
+    const { customer_name, customer_email, customer_phone, delivery_address, product_name, img, amount, failure_reason } = req.body;
+    const orderId = '#KD-FAIL-' + Math.floor(1000 + Math.random() * 9000);
+    const failedOrder = {
+      id: orderId,
+      customer_name: customer_name || 'Valued Patron',
+      customer_email: customer_email || 'patron@kadha.heritage',
+      customer_phone: customer_phone || '+91 90000 00000',
+      delivery_address: delivery_address || 'Address provided at checkout',
+      initials: (customer_name || 'Valued Patron').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),
+      product_name: product_name || 'Handloom Saree Order',
+      img: img || 'Beige Ikat Mulmul Saree.png',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      amount: Number(amount) || 0,
+      status: 'Failed',
+      payment_status: 'Failed',
+      failure_reason: failure_reason || 'Transaction cancelled or failed at bank verification'
+    };
+
+    if (supabase) {
+      try {
+        await supabase.from('orders').insert([failedOrder]);
+      } catch (e) {
+        console.error('Supabase failed order insert:', e);
+      }
+    }
+    defaultOrders.unshift(failedOrder);
+    res.status(200).json({ success: true, orderId: failedOrder.id });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not record failed payment' });
   }
 });
 
