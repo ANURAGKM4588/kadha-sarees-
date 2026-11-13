@@ -376,10 +376,16 @@
       if (bcCat) bcCat.textContent = product.fabric;
       if (bcTitle) bcTitle.textContent = product.name;
 
+      const asset = name => {
+        if (!name) return 'assets/BRAND IDENTITY.png';
+        if (name.startsWith('data:') || name.startsWith('http://') || name.startsWith('https://') || name.startsWith('assets/')) return name;
+        return `assets/${name}`;
+      };
+
       // Update Imagery & Badges
       const mainImg = document.getElementById('pdpMainImg');
       if (mainImg) {
-        mainImg.src = `assets/${product.img}`;
+        mainImg.src = asset(product.img);
         mainImg.alt = product.name;
       }
       const badgeTag = document.getElementById('pdpBadgeTag');
@@ -395,9 +401,9 @@
       if (thumbsContainer) {
         // Multi-angle simulation
         const thumbImages = [
-          `assets/${product.img}`,
+          asset(product.img),
           'assets/Herosection.png',
-          `assets/${product.img}`
+          asset(product.img)
         ];
         thumbsContainer.innerHTML = thumbImages.map((src, idx) => `
           <button class="pdp-thumb ${idx === 0 ? 'active' : ''}" data-thumb="${src}" aria-label="View angle ${idx + 1}">
@@ -520,7 +526,7 @@
       if (bookBtn) {
         bookBtn.addEventListener('click', () => {
           const bookingModalImg = document.getElementById('bookingModalImg');
-          if (bookingModalImg) bookingModalImg.src = `assets/${product.img}`;
+          if (bookingModalImg) bookingModalImg.src = asset(product.img);
           bookDrape(product.name);
         });
       }

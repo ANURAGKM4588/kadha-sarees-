@@ -170,6 +170,7 @@
                   <div class="form-group">
                     <label for="prodCategory">Weave Cluster / Category *</label>
                     <select id="prodCategory" required>
+                      <option value="" disabled selected>Select Weave Cluster...</option>
                       <option value="Narayani">Narayani Pattu (Kanchipuram Silk)</option>
                       <option value="Mulmul">Mulmul Cotton (Andhra Guild)</option>
                       <option value="Sungudi">Sungudi Cotton (Madurai Craft)</option>
@@ -253,33 +254,40 @@
                 </div>
               </div>
 
-              <!-- Visual Asset Picker & Live Preview -->
+              <!-- Visual Asset Uploader & Live Preview -->
               <div class="form-col-visual">
                 <div class="form-group">
-                  <label for="prodImgSelect">Select Saree Image *</label>
-                  <select id="prodImgSelect">
-                    <option value="Maroon Narayani Pattu.png">Maroon Narayani Pattu</option>
-                    <option value="Bottle Green Narayani Pattu.png">Bottle Green Narayani Pattu</option>
-                    <option value="Magenta Narayani Pattu.png">Magenta Narayani Pattu</option>
-                    <option value="Navy Blue Narayani Pattu.png">Navy Blue Narayani Pattu</option>
-                    <option value="Beige Ikat Mulmul Saree.png">Beige Ikat Mulmul Saree</option>
-                    <option value="White Ikat Mulmul Saree.png">White Ikat Mulmul Saree</option>
-                    <option value="Yellow Teal Mulmul Cotton Saree.png">Yellow Teal Mulmul Cotton</option>
-                    <option value="Multicolor Mulmul Cotton Saree.png">Multicolor Mulmul Cotton</option>
-                    <option value="Mustard Yellow Sungudi Cotton Saree.png">Mustard Yellow Sungudi Cotton</option>
-                    <option value="Orange Sungudi Cotton Saree.png">Orange Sungudi Cotton</option>
-                    <option value="Red Sungudi Saree.png">Red Sungudi Saree</option>
-                  </select>
+                  <label>Saree Photo (Upload File) *</label>
+                  <div class="upload-dropzone" id="imgDropzone">
+                    <input type="file" id="prodImgFile" accept="image/png,image/jpeg,image/webp" class="file-input-hidden">
+                    <div class="dropzone-content" id="dropzonePrompt">
+                      <div class="dropzone-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      </div>
+                      <strong style="font-size:13px;color:var(--deep)">Click to Upload or Drag & Drop</strong>
+                      <span style="font-size:11.5px;color:var(--muted)">High-Res JPG, PNG or WEBP</span>
+                    </div>
+                    <div class="dropzone-preview-wrap" id="dropzonePreviewWrap" style="display:none">
+                      <img id="formImgPreview" src="" alt="Uploaded Saree Preview">
+                      <span class="preview-tag" id="previewBadgeTag">HANDLOOM</span>
+                      <button type="button" class="btn-change-photo" id="changeImgBtn">Change Photo</button>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="image-preview-box">
-                  <img id="formImgPreview" src="assets/Maroon Narayani Pattu.png" alt="Saree Preview">
-                  <span class="preview-tag" id="previewBadgeTag">HANDLOOM</span>
+                <div class="form-group">
+                  <label for="prodImgUrl" style="font-size:11.5px;color:var(--muted)">Or paste custom Image URL (Optional):</label>
+                  <input type="url" id="prodImgUrl" placeholder="https://example.com/saree.jpg" style="height:36px;font-size:12.5px">
                 </div>
 
-                <button type="submit" class="btn btn-primary submit-btn" id="submitProductBtn">
-                  <span>＋ Publish Saree to Store</span>
-                </button>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-top:auto">
+                  <button type="submit" class="btn btn-primary submit-btn" id="submitProductBtn">
+                    <span>＋ Publish Saree to Store</span>
+                  </button>
+                  <button type="button" class="btn btn-outline" id="resetFormBtn" style="height:40px;width:100%">
+                    <span>↺ Clear / Fresh Form</span>
+                  </button>
+                </div>
               </div>
             </form>
           </div>

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const https = require('https');
 const crypto = require('crypto');
 const dotenv = require('dotenv');
@@ -29,9 +30,10 @@ const supabase = (SUPABASE_URL && SUPABASE_KEY)
   ? createClient(SUPABASE_URL, SUPABASE_KEY)
   : null;
 
-// Middleware
+// Middleware with 25MB body limit for high-res saree image uploads
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Default fallback catalogue
 const defaultProducts = [
@@ -172,6 +174,39 @@ app.get('/api/health', async (req, res) => {
     razorpayConfigured: Boolean(RAZORPAY_KEY_ID && RAZORPAY_KEY_SECRET),
     error: errorMsg
   });
+});
+
+// Image Upload: POST (Save newly uploaded product image directly into assets)
+app.post('/api/upload-image', (req, res) => {
+  try {
+    const { imageBase64, filename } = req.body;
+    if (!imageBase64) {
+      return res.status(400).json({ error: 'No image data provided' });
+    }
+
+    let base64Data = imageBase64;
+    let ext = 'png';
+    const matches = imageBase64.match(/^data:image\/([a-zA-Z0-9]+);base64,(.+)$/);
+    if (matches) {
+      ext = matches[1].toLowerCase() === 'jpeg' ? 'jpg' : matches[1].toLowerCase();
+      base64Data = matches[2];
+    }
+
+    const cleanBase = (filename ? filename.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_.-]/g, '_') : 'saree') + '_' + Date.now();
+    const finalFilename = `${cleanBase}.${ext}`;
+    const targetPath = path.join(__dirname, 'assets', finalFilename);
+
+    fs.writeFile(targetPath, Buffer.from(base64Data, 'base64'), (err) => {
+      if (err) {
+        console.error('Error writing uploaded image file:', err);
+        return res.json({ success: true, filename: imageBase64, url: imageBase64 });
+      }
+      res.json({ success: true, filename: finalFilename, url: `assets/${finalFilename}` });
+    });
+  } catch (err) {
+    console.error('Upload endpoint error:', err);
+    res.status(500).json({ error: 'Failed to process image upload' });
+  }
 });
 
 // Products: GET

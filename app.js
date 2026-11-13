@@ -27,7 +27,11 @@ async function fetchProductsFromBackend() {
     console.log('Serving catalogue from local cache');
   }
 }
-const asset = name => `assets/${name}`;
+const asset = name => {
+  if (!name) return 'assets/BRAND IDENTITY.png';
+  if (name.startsWith('data:') || name.startsWith('http://') || name.startsWith('https://') || name.startsWith('assets/')) return name;
+  return `assets/${name}`;
+};
 const money = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
 let currentFilter='All';
 let cart=JSON.parse(localStorage.getItem('kadha-cart')||'[]');

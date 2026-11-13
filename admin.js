@@ -7,7 +7,7 @@
 
   // State
   let state = {
-    activeTab: 'products', // Default to products so the Product Adding Section is instantly visible!
+    activeTab: 'products', // Default to products view so Product Adding Section is front & center!
     orderFilter: 'all',
     orderSearch: '',
     productSearch: '',
@@ -16,6 +16,16 @@
     products: [],
     customers: [],
     bookings: []
+  };
+
+  // Saree photo upload state
+  let uploadedImageSource = '';
+
+  // Asset helper for local filenames, base64 strings, or full URLs
+  const asset = (name) => {
+    if (!name) return 'assets/BRAND IDENTITY.png';
+    if (name.startsWith('data:') || name.startsWith('http://') || name.startsWith('https://') || name.startsWith('assets/')) return name;
+    return `assets/${name}`;
   };
 
   // Currency Formatter
@@ -285,7 +295,7 @@
         <tr>
           <td>
             <div class="product-cell">
-              <img class="product-thumb" src="assets/${p.img}" alt="${p.name}">
+              <img class="product-thumb" src="${asset(p.img)}" alt="${p.name}">
             </div>
           </td>
           <td>
@@ -362,23 +372,133 @@
 
   function initAddProductForm() {
     const form = document.getElementById('addProductForm');
-    const imgSelect = document.getElementById('prodImgSelect');
+    const fileInput = document.getElementById('prodImgFile');
+    const dropzone = document.getElementById('imgDropzone');
+    const dropPrompt = document.getElementById('dropzonePrompt');
+    const dropPreviewWrap = document.getElementById('dropzonePreviewWrap');
     const imgPreview = document.getElementById('formImgPreview');
+    const urlInput = document.getElementById('prodImgUrl');
+    const changeBtn = document.getElementById('changeImgBtn');
+    const resetBtn = document.getElementById('resetFormBtn');
     const badgeSelect = document.getElementById('prodBadge');
     const previewTag = document.getElementById('previewBadgeTag');
 
-    if (imgSelect && imgPreview) {
-      imgSelect.addEventListener('change', () => {
-        imgPreview.src = `assets/${imgSelect.value}`;
+    function displayImagePreview(src) {
+      if (!src) return;
+      uploadedImageSource = src;
+      if (imgPreview) imgPreview.src = src;
+      if (dropPrompt) dropPrompt.style.display = 'none';
+      if (dropPreviewWrap) dropPreviewWrap.style.display = 'block';
+    }
+
+    function resetImagePreview() {
+      uploadedImageSource = '';
+      if (fileInput) fileInput.value = '';
+      if (urlInput) urlInput.value = '';
+      if (imgPreview) imgPreview.src = '';
+      if (dropPrompt) dropPrompt.style.display = 'flex';
+      if (dropPreviewWrap) dropPreviewWrap.style.display = 'none';
+    }
+
+    // Handle File Input Selection
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (evt) => {
+          const base64 = evt.target.result;
+          displayImagePreview(base64);
+
+          // Upload to backend server to save into assets/
+          try {
+            const upRes = await fetch('/api/upload-image', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ imageBase64: base64, filename: file.name })
+            });
+            if (upRes.ok) {
+              const upData = await upRes.json();
+              if (upData.filename) {
+                uploadedImageSource = upData.filename;
+              }
+            }
+          } catch (err) {
+            console.warn('Backend upload fallback to base64 data URL:', err);
+          }
+        };
+        reader.readAsDataURL(file);
       });
     }
 
+    // Change photo button inside preview
+    if (changeBtn && fileInput) {
+      changeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
+    // Drag and Drop handlers
+    if (dropzone) {
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+      ['dragleave', 'dragend', 'drop'].forEach((type) => {
+        dropzone.addEventListener(type, () => dropzone.classList.remove('dragover'));
+      });
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = async (evt) => {
+            const base64 = evt.target.result;
+            displayImagePreview(base64);
+            try {
+              const upRes = await fetch('/api/upload-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ imageBase64: base64, filename: file.name })
+              });
+              if (upRes.ok) {
+                const upData = await upRes.json();
+                if (upData.filename) uploadedImageSource = upData.filename;
+              }
+            } catch (err) {}
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // Image URL manual input
+    if (urlInput) {
+      urlInput.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if (val) displayImagePreview(val);
+      });
+    }
+
+    // Craft badge sync
     if (badgeSelect && previewTag) {
       badgeSelect.addEventListener('change', () => {
         previewTag.textContent = badgeSelect.value.toUpperCase();
       });
     }
 
+    // Reset / Clear Form (Fresh Entry)
+    if (resetBtn && form) {
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        resetImagePreview();
+        showToast('All fields cleared for fresh entry');
+      });
+    }
+
+    // Form submit
     if (form) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -394,10 +514,15 @@
         const price = Number(document.getElementById('prodPrice')?.value);
         const was = Number(document.getElementById('prodWas')?.value) || Math.round(price * 1.18);
         const desc = document.getElementById('prodDesc')?.value.trim();
-        const img = document.getElementById('prodImgSelect')?.value;
+        const img = uploadedImageSource || document.getElementById('prodImgUrl')?.value.trim();
 
         if (!name || !price) {
           showToast('Please provide saree name and price');
+          return;
+        }
+
+        if (!img) {
+          showToast('Please upload a saree photo or enter an image link');
           return;
         }
 
@@ -433,7 +558,6 @@
             const created = await res.json();
             state.products.unshift(created);
           } else {
-            // Local fallback
             newSaree.id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(100 + Math.random() * 900);
             state.products.unshift(newSaree);
           }
@@ -442,7 +566,7 @@
           renderProducts();
           showToast(`Published "${name}" to store catalogue!`);
           form.reset();
-          if (imgPreview) imgPreview.src = `assets/${imgSelect.value}`;
+          resetImagePreview();
         } catch (err) {
           console.error('Error submitting product:', err);
           showToast('Could not reach backend, added to local view');
@@ -547,7 +671,7 @@
           </td>
           <td>
             <div class="product-cell">
-              <img class="product-thumb" src="assets/${img}" alt="${product}">
+              <img class="product-thumb" src="${asset(img)}" alt="${product}">
               <span class="product-cell-name">${product}</span>
             </div>
           </td>
@@ -589,7 +713,7 @@
 
     // Attach fulfillment change listener
     tbody.querySelectorAll('.fulfillment-select').forEach((sel) => {
-      sel.addEventListener('change', async () => {
+      sel.addEventListener('change', async (e) => {
         const orderId = sel.getAttribute('data-order-id');
         const newStatus = sel.value;
         const ord = state.orders.find((x) => x.id === orderId);
@@ -733,7 +857,7 @@
       <div class="modal-section">
         <span class="modal-sec-title">Ordered Item</span>
         <div class="modal-info-card" style="flex-direction:row;align-items:center;gap:14px">
-          <img src="assets/${img}" alt="" style="width:54px;height:54px;border-radius:10px;object-fit:cover">
+          <img src="${asset(img)}" alt="" style="width:54px;height:54px;border-radius:10px;object-fit:cover">
           <div>
             <strong style="display:block;font-size:14px">${product}</strong>
             <span style="font-size:12px;color:var(--muted)">100% Genuine Handloom Authenticated · Signature Reusable Keepsake Box</span>
