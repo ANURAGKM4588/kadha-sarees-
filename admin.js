@@ -379,6 +379,7 @@
     const imgPreview = document.getElementById('formImgPreview');
     const urlInput = document.getElementById('prodImgUrl');
     const changeBtn = document.getElementById('changeImgBtn');
+    const browseBtn = document.getElementById('browseFileBtn');
     const resetBtn = document.getElementById('resetFormBtn');
     const badgeSelect = document.getElementById('prodBadge');
     const previewTag = document.getElementById('previewBadgeTag');
@@ -400,77 +401,110 @@
       if (dropPreviewWrap) dropPreviewWrap.style.display = 'none';
     }
 
-    // Handle File Input Selection
-    if (fileInput) {
-      fileInput.addEventListener('change', (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (!file) return;
+    // Unified file processing and backend upload handler
+    async function handleFileUpload(file) {
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('Please select a valid image file (JPG, PNG, WEBP)');
+        return;
+      }
 
-        const reader = new FileReader();
-        reader.onload = async (evt) => {
-          const base64 = evt.target.result;
-          displayImagePreview(base64);
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        const base64 = evt.target.result;
+        displayImagePreview(base64);
+        showToast('Uploading saree photo...');
 
-          // Upload to backend server to save into assets/
-          try {
-            const upRes = await fetch('/api/upload-image', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ imageBase64: base64, filename: file.name })
-            });
-            if (upRes.ok) {
-              const upData = await upRes.json();
-              if (upData.filename) {
-                uploadedImageSource = upData.filename;
-              }
+        try {
+          const upRes = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageBase64: base64, filename: file.name })
+          });
+          if (upRes.ok) {
+            const upData = await upRes.json();
+            if (upData.filename) {
+              uploadedImageSource = upData.filename;
+              showToast(`✓ Photo uploaded: ${file.name}`);
+              return;
             }
-          } catch (err) {
-            console.warn('Backend upload fallback to base64 data URL:', err);
           }
-        };
-        reader.readAsDataURL(file);
-      });
+        } catch (err) {
+          console.warn('Backend upload fallback to base64 data URL:', err);
+        }
+        showToast(`✓ Photo ready: ${file.name}`);
+      };
+      reader.readAsDataURL(file);
     }
 
-    // Change photo button inside preview
-    if (changeBtn && fileInput) {
-      changeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        fileInput.click();
-      });
+    // Helper to open OS file picker reliably
+    function openFileChooser() {
+      if (!fileInput) return;
+      fileInput.value = ''; // Clear value so re-selecting same file triggers change
+      fileInput.click();
     }
 
-    // Drag and Drop handlers
+    // 1. Click anywhere on Dropzone -> Open File Picker
     if (dropzone) {
+      dropzone.addEventListener('click', (e) => {
+        // If clicking Change Photo, let its specific handler run
+        if (e.target.closest('#changeImgBtn')) return;
+        openFileChooser();
+      });
+
+      // Keyboard accessibility (Enter or Space)
+      dropzone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openFileChooser();
+        }
+      });
+
+      // Drag and Drop
       dropzone.addEventListener('dragover', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         dropzone.classList.add('dragover');
       });
-      ['dragleave', 'dragend', 'drop'].forEach((type) => {
-        dropzone.addEventListener(type, () => dropzone.classList.remove('dragover'));
+      ['dragleave', 'dragend'].forEach((type) => {
+        dropzone.addEventListener(type, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+        });
       });
       dropzone.addEventListener('drop', (e) => {
         e.preventDefault();
-        const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = async (evt) => {
-            const base64 = evt.target.result;
-            displayImagePreview(base64);
-            try {
-              const upRes = await fetch('/api/upload-image', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ imageBase64: base64, filename: file.name })
-              });
-              if (upRes.ok) {
-                const upData = await upRes.json();
-                if (upData.filename) uploadedImageSource = upData.filename;
-              }
-            } catch (err) {}
-          };
-          reader.readAsDataURL(file);
+        e.stopPropagation();
+        dropzone.classList.remove('dragover');
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length > 0) {
+          handleFileUpload(files[0]);
         }
+      });
+    }
+
+    // 2. Browse Button inside Prompt
+    if (browseBtn) {
+      browseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openFileChooser();
+      });
+    }
+
+    // 3. Change Photo Button inside Preview
+    if (changeBtn) {
+      changeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openFileChooser();
+      });
+    }
+
+    // 4. File Input Change event
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) handleFileUpload(file);
       });
     }
 

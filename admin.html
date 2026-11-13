@@ -257,20 +257,21 @@
               <!-- Visual Asset Uploader & Live Preview -->
               <div class="form-col-visual">
                 <div class="form-group">
-                  <label>Saree Photo (Upload File) *</label>
-                  <div class="upload-dropzone" id="imgDropzone">
-                    <input type="file" id="prodImgFile" accept="image/png,image/jpeg,image/webp" class="file-input-hidden">
+                  <label for="prodImgFile" style="cursor:pointer">Saree Photo (Upload File) *</label>
+                  <input type="file" id="prodImgFile" accept="image/png,image/jpeg,image/webp" style="display:none">
+                  <div class="upload-dropzone" id="imgDropzone" role="button" tabindex="0" title="Click to choose a saree photo from your device">
                     <div class="dropzone-content" id="dropzonePrompt">
                       <div class="dropzone-icon">
                         <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                       </div>
-                      <strong style="font-size:13px;color:var(--deep)">Click to Upload or Drag & Drop</strong>
+                      <strong style="font-size:13.5px;color:var(--deep)">Click to Upload or Drag & Drop</strong>
                       <span style="font-size:11.5px;color:var(--muted)">High-Res JPG, PNG or WEBP</span>
+                      <span class="btn-browse-pill" id="browseFileBtn">📁 Choose Saree Photo</span>
                     </div>
                     <div class="dropzone-preview-wrap" id="dropzonePreviewWrap" style="display:none">
                       <img id="formImgPreview" src="" alt="Uploaded Saree Preview">
                       <span class="preview-tag" id="previewBadgeTag">HANDLOOM</span>
-                      <button type="button" class="btn-change-photo" id="changeImgBtn">Change Photo</button>
+                      <button type="button" class="btn-change-photo" id="changeImgBtn">↺ Change Photo</button>
                     </div>
                   </div>
                 </div>
